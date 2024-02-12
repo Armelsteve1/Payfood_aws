@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "Payfood",
-    "slug": "Payfood",
+    "name": "payfood",
+    "slug": "payfood",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/favicone.jpeg",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,12 +19,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/favicone.jpeg",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.armel1.payfood"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicone.jpeg"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a09cea40-9582-4938-9a94-40c007f479fe"
+      }
     }
   }
 }
