@@ -1,27 +1,22 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { View, Text, Alert, StyleSheet } from 'react-native';
-import { Auth } from 'aws-amplify';
 import { useNavigation } from '@react-navigation/native';
 import AppForm from '../component/forms/AppForm';
 import AppFormFeilds from '../component/forms/AppFormFeilds';
 import AppSubmitButton from '../component/forms/AppSubmitButton';
 import colors from '../../src/component/configs/colors';
 import Screen from '../component/Screen';
-
-import { AuthContext } from '../navigation/appNavigation';
+import AuthContext from '../hooks/AuthContext';
 
 const LoginScreen = () => {
-    const { setUser } = useContext(AuthContext);
-
+    const { signIn } = useContext(AuthContext);
     const navigation = useNavigation();
+
     const handleLogin = async (values) => {
         try {
-            console.log('Before signIn', values.email, values.password);
-            await Auth.signIn(values.email, values.password);
+            console.log('signIn', values.email);
+            await signIn(values.email, values.password);
             console.log('✅ Success');
-            
-            const userData = await Auth.currentAuthenticatedUser();
-            setUser(userData.attributes);
         } catch (error) {
             Alert.alert('Erreur de connexion', error.message);
         }
