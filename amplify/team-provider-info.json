@@ -1,0 +1,23 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-payfood-dev-221656-authRole",
+      "UnauthRoleArn": "arn:aws:iam::217806494002:role/amplify-payfood-dev-221656-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::217806494002:role/amplify-payfood-dev-221656-authRole",
+      "Region": "eu-north-1",
+      "DeploymentBucketName": "amplify-payfood-dev-221656-deployment",
+      "UnauthRoleName": "amplify-payfood-dev-221656-unauthRole",
+      "StackName": "amplify-payfood-dev-221656",
+      "StackId": "arn:aws:cloudformation:eu-north-1:217806494002:stack/amplify-payfood-dev-221656/92bfc170-be22-11ee-b27d-0a21de041f90",
+      "AmplifyAppId": "d2vehp739d08wd"
+    },
+    "categories": {
+      "auth": {
+        "payfood35ca3964": {}
+      },
+      "api": {
+        "payfood": {}
+      }
+    }
+  }
+}
