@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 import AuthNavigator from './AuthNavigator';
 import { Auth } from 'aws-amplify';
 import HomeNavigator from './HomeNavigator';
 import { LogBox } from 'react-native';
 import { ActivityIndicator, View } from 'react-native';
-LogBox.ignoreLogs(['new NativeEventEmitter']);
+import AuthContext from '../hooks/AuthContext'; 
 
-export const AuthContext = React.createContext();
+LogBox.ignoreLogs(['new NativeEventEmitter']);
 
 export default function AppNavigator() {
     const [user, setUser] = useState(null);
@@ -21,6 +21,7 @@ export default function AppNavigator() {
         try {
             const userData = await Auth.currentAuthenticatedUser();
             setUser(userData.attributes);
+            console.log(userData.attributes,'user')
         } catch (error) {
             console.log('user is not signed in');
             setUser(null);
@@ -37,7 +38,26 @@ export default function AppNavigator() {
     }
 
     return (
-        <AuthContext.Provider value={{ user, setUser }}>
+        <AuthContext.Provider value={{ 
+            isSignedIn: !!user, 
+            signIn: async (username, password) => {
+                try {
+                    const userData = await Auth.signIn(username, password);
+                    console.log(user,'utilisateur')
+                    setUser(userData.attributes);
+                } catch (error) {
+                    console.error('Error signing in:', error);
+                }
+            },
+            signOut: async () => {
+                try {
+                    await Auth.signOut();
+                    setUser(null);
+                } catch (error) {
+                    console.error('Error signing out:', error);
+                }
+            },
+        }}>
             <NavigationContainer>
                 {user ? (
                     <HomeNavigator />
