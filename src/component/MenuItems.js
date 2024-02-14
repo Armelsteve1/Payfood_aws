@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,createContext } from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 import tailwind from 'tailwind-react-native-classnames';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import colors from '../component/configs/colors';
-
+export const CartContext = createContext();
+export const cartItemsValue= [];
 const MenuItems = ({ resName, resImage, id, menu_id, handleTotalPrice, handleTotalItems }) => {
     const [foods, setFoods] = useState([]);
     const [cartItems, setCartItems] = useState([]);
-    console.log('Cart Items:', cartItems);
+    // cartItemsValue
     useEffect(() => {
         fetch(`https://qxqiytxy36.execute-api.eu-north-1.amazonaws.com/items/${id}/${menu_id}`)
             .then(response => response.json())

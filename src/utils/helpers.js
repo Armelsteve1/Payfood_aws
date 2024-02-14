@@ -1,18 +1,6 @@
 import { Alert } from 'react-native'
 import { STRIPE_API_URL } from '../component/configs/apiEndpoints'
 
-export const getAllCartFoods = (items) => {
-    let allFoods = []
-    items.forEach(item => item.foods.forEach(food => allFoods.push(food)))
-    return allFoods
-}
-
-export const getTotalCartItemPrice = (items) => {
-    let total = 0
-    items.forEach(item => item.foods.forEach(food => total += food.price))
-    return total.toFixed(1)
-}
-
 export const fetchPublishableKey = async () => {
     try {
         const response = await fetch(`${STRIPE_API_URL}/stripe-key`)
