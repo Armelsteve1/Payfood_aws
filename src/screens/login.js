@@ -51,7 +51,7 @@ const LoginScreen = () => {
                 <Text style={styles.join}>
                     Vous n'avez pas encore de compte ?{" "}
                     <Text
-                        onPress={() => navigation.navigate("JoinScreen")}
+                        onPress={() => navigation.navigate("SignUp")}
                         style={{ color: colors.primary }}
                     >
                         S'inscrire
