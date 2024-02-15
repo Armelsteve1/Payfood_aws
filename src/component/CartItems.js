@@ -1,21 +1,12 @@
-import React, { useState, useContext } from 'react';
+import React, {useContext } from 'react';
 import { View, StyleSheet, Text, Image, ScrollView } from 'react-native';
 import tailwind from 'tailwind-react-native-classnames';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import colors from '../component/configs/colors';
-import { CartContext } from './MenuItems';
-
+import { CartContext } from '../hooks/cartContext';
 const CartItems = () => {
-    const cartItemsValue = useContext(CartContext);
-    const [cartItems, setCartItems] = useState(cartItemsValue);
-    
-    console.log('Cart Items:', cartItems);
-    
-    if (!Array.isArray(cartItems)) {
-        console.error('cartItems is not an array:', cartItems);
-        return null;
-    }
-    
+    const { cartItems, setCartItems } = useContext(CartContext);
+    console.log(cartItems, 'cartItems');
     const match = (id, resName) => {
         return cartItems.some(item => item.resName === resName && item.foods.some(food => food.id === id));
     }
