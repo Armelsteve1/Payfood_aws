@@ -3,13 +3,16 @@ import AppNavigation from './src/navigation/appNavigation';
 import { Amplify } from 'aws-amplify';
 import config from './src/aws-exports';
 Amplify.configure(config)
+import { CartProvider } from './src/hooks/cartContext';
 
 
 export default function App() {
   
   return (
     <View style={styles.container}>
-         <AppNavigation/>
+      <CartProvider>
+        <AppNavigation/>
+      </CartProvider>
     </View>
   );
 }

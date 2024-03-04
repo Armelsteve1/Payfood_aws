@@ -14,7 +14,6 @@ const LoginScreen = () => {
 
     const handleLogin = async (values) => {
         try {
-            console.log('signIn', values.email);
             await signIn(values.email, values.password);
             console.log('✅ Success');
         } catch (error) {

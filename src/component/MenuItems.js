@@ -1,14 +1,14 @@
-import React, { useEffect, useState,createContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 import tailwind from 'tailwind-react-native-classnames';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import colors from '../component/configs/colors';
-export const CartContext = createContext();
-export const cartItemsValue= [];
+import { CartContext } from '../hooks/cartContext';
+
 const MenuItems = ({ resName, resImage, id, menu_id, handleTotalPrice, handleTotalItems }) => {
     const [foods, setFoods] = useState([]);
-    const [cartItems, setCartItems] = useState([]);
-    // cartItemsValue
+    const { cartItems, setCartItems } = useContext(CartContext);
+
     useEffect(() => {
         fetch(`https://qxqiytxy36.execute-api.eu-north-1.amazonaws.com/items/${id}/${menu_id}`)
             .then(response => response.json())
@@ -16,13 +16,8 @@ const MenuItems = ({ resName, resImage, id, menu_id, handleTotalPrice, handleTot
             .catch(error => console.error('Il y avait une erreur lors de la récupération des données de l\'API', error));
     }, []);
 
-    const match = id => {
-        const resIndex = cartItems.findIndex(item => item.resName === resName);
-        if (resIndex >= 0) {
-            const menuIndex = cartItems[resIndex].foods.findIndex(item => item.id === id);
-            return menuIndex >= 0;
-        }
-        return false;
+    const match = (id) => {
+        return cartItems.some(item => item.foods.some(food => food.id === id));
     };
 
     const handleAddRemove = (id) => {
@@ -55,15 +50,15 @@ const MenuItems = ({ resName, resImage, id, menu_id, handleTotalPrice, handleTot
             }];
             setCartItems(newResFoodArray);
         }
-    }
+    };
 
     useEffect(() => {
-        const newTotalPrice = cartItems.reduce((total, item) => total + item.foods.reduce((sum, food) => sum + food.price, 0), 0);
-        const newAllItems = cartItems.reduce((total, item) => total + item.foods.length, 0);
-    
-        handleTotalPrice(newTotalPrice);
-        handleTotalItems(newAllItems);
-        console.log(newTotalPrice);
+        if (cartItems && cartItems.length > 0) {
+            const newTotalPrice = cartItems.reduce((total, item) => total + item.foods.reduce((sum, food) => sum + food.price, 0), 0);
+            const newAllItems = cartItems.reduce((total, item) => total + item.foods.length, 0);
+            handleTotalPrice(newTotalPrice);
+            handleTotalItems(newAllItems);
+        }
     }, [cartItems]);
 
     return (

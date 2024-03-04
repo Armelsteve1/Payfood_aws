@@ -12,15 +12,11 @@ import CheckoutModal from '../component/CheckoutModal';
 const CartScreen = ({ route }) => {
     const { total = 0, count = 0 } = route.params || {};
     const [modalVisible, setModalVisible] = useState(false);
-
-    console.log('Price:', total);
-    console.log('All Items:', count);
-
     return (
         <Screen style={tailwind`flex-1 bg-white`}>
             <AppHead title={`Votre Panier (${count})`} icon="basket-outline" />
             <View style={tailwind`flex-1`}>
-                <CartItems  />
+                <CartItems />
             </View>
             {!!count > 0 && (
                 <View style={tailwind`flex-row items-center px-5 pb-5`}>
