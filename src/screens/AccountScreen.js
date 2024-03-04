@@ -104,6 +104,9 @@ const AccountScreen = () => {
                     <TouchableOpacity onPress={handleSignOut}>
                         <Text style={{ ...tailwind`text-gray-900 mt-2`, color: colors.gray }}>Se déconnecter</Text>
                     </TouchableOpacity>
+                    <TouchableOpacity onPress={handleSignOut}>
+                        <Text style={{ ...tailwind`text-gray-900 mt-2`, color: colors.gray }}>Restaurateur</Text>
+                    </TouchableOpacity>
                     <TouchableOpacity onPress={handleDelete}>
                         <Text style={{ ...tailwind`text-gray-900 mt-2`, color: colors.denger }}>Supprimer mon compte</Text>
                     </TouchableOpacity>
