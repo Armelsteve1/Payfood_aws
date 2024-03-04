@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Alert,StyleSheet, Text } from 'react-native';
+import { View, Alert,StyleSheet, Text, Image } from 'react-native';
 import { Auth } from 'aws-amplify';
 import AppForm from "../component/forms/AppForm";
 import Screen from "../component/Screen";
@@ -26,6 +26,7 @@ const SignUp = () => {
     }
     return (
         <Screen style={styles.container}>
+            <Image style={styles.logo} source={require("../assets/logo.png")} />
             <View style={styles.wrapper}>
                 <Text style={styles.wellcomeTo}>Rejoignez Pay<Text style={styles.brand}>Food</Text></Text>
                 <View style={styles.form}>
@@ -53,14 +54,12 @@ const styles = StyleSheet.create({
       backgroundColor: colors.white,
       justifyContent: 'center',
     },
+    logo: {
+      top: -170,
+      alignSelf: "center",
+    },
     wrapper: {
       paddingHorizontal: 20,
-    },
-    logo: {
-      height: 160,
-      resizeMode: "contain",
-      alignSelf: "center",
-      marginTop: 30,
     },
     wellcomeTo: {
       fontSize: 23,

@@ -8,6 +8,7 @@ function JoinScreen({ navigation }) {
         <View style={styles.container}>
             <ImageBackground
                 source={require("../assets/homePage.png")}
+                resizeMode="cover" 
                 style={styles.image}
             >
                 <Image style={styles.logo} source={require("../assets/logo.png")} />
@@ -34,9 +35,8 @@ const styles = StyleSheet.create({
         top: 10
     },
     image: {
-        width: '100%',
+        // width: '100%',
         height: '100%',
-        resizeMode: "contain",
         justifyContent: 'flex-end',
     },
     content: {
