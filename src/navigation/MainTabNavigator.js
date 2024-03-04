@@ -8,6 +8,7 @@ import { AntDesign } from '@expo/vector-icons';
 import CartScreen from '../screens/PanierScreen';
 import WalletScreen from '../screens/WalletScreen';
 import AccountScreen from '../screens/AccountScreen';
+import AccountSettingsScreen from '../screens/AccountSettingsScreen';
 
 
 const Tab = createBottomTabNavigator()

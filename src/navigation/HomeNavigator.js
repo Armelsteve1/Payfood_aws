@@ -5,7 +5,7 @@ import DetailsScreen from '../screens/DetailsScreen';
 import CheckoutScreen from '../screens/CheckoutScreen';
 import MainTabNavigator from './MainTabNavigator';
 // import EditProfileScreen from '../screens/EditProfileScreen';
-// import AccountSettingsScreen from '../screens/AccountSettingsScreen';
+import AccountSettingsScreen from '../screens/AccountSettingsScreen';
 import AuthNavigator from './AuthNavigator';
 const Stack = createStackNavigator();
 
@@ -21,8 +21,8 @@ export default function HomeNavigator() {
             <Stack.Screen name="Auth" component={AuthNavigator} />
             <Stack.Screen name="CheckoutScreen" component={CheckoutScreen} />
             {/* <Stack.Screen name="SuccessScreen" component={SuccessScreen} />
-            <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
-            <Stack.Screen name="AccountSettingsScreen" component={AccountSettingsScreen} /> */}
+            <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} /> */}
+            <Stack.Screen name="Preferences" component={AccountSettingsScreen} />
         </Stack.Navigator>
     )
 }
