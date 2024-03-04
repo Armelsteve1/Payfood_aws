@@ -8,7 +8,7 @@ import { AntDesign } from '@expo/vector-icons';
 import CartScreen from '../screens/PanierScreen';
 import WalletScreen from '../screens/WalletScreen';
 import AccountScreen from '../screens/AccountScreen';
-import AccountSettingsScreen from '../screens/AccountSettingsScreen';
+import ScanScreen from '../screens/ScanScreen';
 
 
 const Tab = createBottomTabNavigator()
@@ -48,6 +48,13 @@ const MainTabNavigator = () => {
                     <Ionicons name="basket-outline" color={color} size={size} />                    )
                     // tabBarButton: () => <TabCartButton onPress={() => navigation.navigate('Panier')} />
                 })}
+            />
+            <Tab.Screen name="Scan" component={ScanScreen}
+                options={{
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons name="qr-code-outline" color={color} size={size} />
+                    )
+                }}
             />
             <Tab.Screen name="Portefeuille" component={WalletScreen}
                 options={{
