@@ -99,7 +99,7 @@ const CheckoutScreen = () => {
     const { error } = await confirmPaymentSheetPayment();
 
     if (error) {
-      Alert.alert('Payment faild', `Error code: ${error.code}`, error.message);
+      Alert.alert('Payment failed', `Error code: ${error.code}`, error.message);
     } else {
       addOrder();
       setPaymentSheetEnabled(false);
