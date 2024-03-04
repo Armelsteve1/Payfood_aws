@@ -7,6 +7,7 @@ export default function CameraScanner({ handleGoBack }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [scannedUrl, setScannedUrl] = useState(null);
+  console.log(scannedUrl)
 
   useEffect(() => {
     (async () => {
@@ -90,11 +91,11 @@ export default function CameraScanner({ handleGoBack }) {
 
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleGoBack}>
+      {/* <TouchableOpacity style={styles.button} onPress={handleGoBack}>
 
         <Text style={styles.buttonText}>Annuler</Text>
 
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
     </View>
 
@@ -120,7 +121,7 @@ const styles = StyleSheet.create({
   camera: {
 
     width: "80%",
-
+    height: '80%',
     aspectRatio: 1,
 
   },

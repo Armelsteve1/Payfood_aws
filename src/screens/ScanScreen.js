@@ -20,7 +20,7 @@ export default function ScannerForm({ setValidTicket }) {
 
   const navigation = useNavigation();
 
-  const [showCamera, setShowCamera] = useState(false);
+  const [showCamera, setShowCamera] = useState(true);
   const [showInput, setShowInput] = useState(false);
   const [ticketCode, setTicketCode] = useState("");
   const [ticketUrl, setTicketUrl] = useState("");
@@ -272,7 +272,7 @@ export default function ScannerForm({ setValidTicket }) {
             />
           ) : (
             <View style={styles.buttonContainer}>
-              {!isValidTicket && (
+              {/* {!isValidTicket && (
                 <Card containerStyle={styles.card}>
                   <TouchableOpacity
                     style={styles.button}
@@ -290,7 +290,7 @@ export default function ScannerForm({ setValidTicket }) {
                     <Text style={styles.buttonText}>Scanner un QR code</Text>
                   </TouchableOpacity>
                 </Card>
-              )}
+              )} */}
             </View>
           )}
         </View>

@@ -22,9 +22,9 @@ const MainTabNavigator = () => {
                 headerShown: false,
                 tabBarStyle: {
                     borderTopWidth: 0,
-                    paddingTop: 1,
-                    paddingBottom: 18,
-                    height: 60,
+                    paddingTop: 15,
+                    paddingBottom: 30,
+                    height: 80,
                 },
             }}
         >
