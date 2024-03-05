@@ -3,6 +3,13 @@ import { View, Text, TouchableOpacity, ScrollView, Modal, TextInput, Button } fr
 import { Card } from "react-native-elements";
 import { StatusBar } from "expo-status-bar";
 import { Picker } from '@react-native-picker/picker';
+import AppHead from '../component/AppHead';
+import Screen from '../component/Screen'
+import tailwind from 'tailwind-react-native-classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faCoins } from '@fortawesome/free-solid-svg-icons';
+import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
+
 
 export default function WalletScreen() {
   const [selectedTransaction, setSelectedTransaction] = useState('');
@@ -20,159 +27,155 @@ export default function WalletScreen() {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Card containerStyle={styles.card}>
-        <Text style={styles.text}>FOOD COINS</Text>
-        <Text style={styles.text1}>15,00€</Text>
-      </Card>
-      <View style={styles.main}>
-        <Text style={styles.text2}>Food Coins</Text>
+    <Screen style={tailwind`flex-1 bg-white`}>
+      <AppHead title={`Mon portefeuille`} icon="card-outline" />
+      <View contentContainerStyle={styles.cardContainer}>
+        <Card containerStyle={styles.card}>
+          <View style={styles.coinContainer}>
+            <Text style={styles.text1}>15,00</Text>
+            <FontAwesomeIcon icon={faCoins} size={24} color="rgb(242, 204, 42)" style={styles.icon} />
+          </View>
+        </Card>
+        {/* <View style={styles.main}>
+          <Text style={styles.text2}>Food Coins</Text>
+        </View> */}
+        <View>
+          <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}>
+            <Text style={styles.buttonText}>Rechargez vos Food Coins</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={styles.main1}>
-        <Text style={styles.text3}>Rechargez vos Food Coins</Text>
-      </View>
-      <View>
-        <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}>
-          <Text style={styles.buttonText}>Rechargez</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.main}>
-        <Text style={styles.text2}>Mode de paiement</Text>
-      </View>
-      <View>
-        <TouchableOpacity
-          style={{
-            width: 313,
-            height: 40,
-            flexShrink: 0,
-            borderRadius: 8,
-            backgroundColor: "#F7F7F7",
-            shadowColor: "rgba(0, 0, 0, 0.25)",
-            shadowOffset: {
-              width: 0,
-              height: 4,
-            },
-            shadowRadius: 4,
-            shadowOpacity: 2,
-            marginTop: 19,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Text
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.main}>
+          <Text style={styles.text2}>Moyens de paiement</Text>
+        </View>
+        {/* <View>
+          <TouchableOpacity
             style={{
-              color: "#000",
-              fontSize: 20,
-              fontStyle: "normal",
-              fontWeight: "500",
-              lineHeight: 36,
-              textAlign: 'left'
+              width: 313,
+              height: 40,
+              flexShrink: 0,
+              borderRadius: 8,
+              // backgroundColor: "#E71C6B",
+              shadowColor: "rgba(0, 0, 0, 0.25)",
+              shadowOffset: {
+                width: 0,
+                height: 4,
+              },
+              shadowRadius: 4,
+              shadowOpacity: 2,
+              marginTop: 19,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
-            Défaut
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View>
-        <TouchableOpacity
+            <Text
+              style={{
+                color: "#000",
+                fontSize: 20,
+                fontStyle: "normal",
+                fontWeight: "500",
+                lineHeight: 36,
+                textAlign: 'left'
+              }}
+            >
+              Apple pay
+            </Text>
+          </TouchableOpacity>
+        </View> */}
+        <View
           style={{
             width: 313,
-            height: 40,
-            flexShrink: 0,
-            borderRadius: 8,
-            backgroundColor: "#F7F7F7",
-            shadowColor: "rgba(0, 0, 0, 0.25)",
-            shadowOffset: {
-              width: 0,
-              height: 4,
-            },
-            shadowRadius: 4,
-            shadowOpacity: 2,
+            borderBottomWidth: 1,
+            borderBottomColor: 'grey',
             marginTop: 19,
             flexDirection: 'row',
-            justifyContent: 'center',
             alignItems: 'center',
+            paddingHorizontal: 10,
           }}
         >
+          <FontAwesomeIcon icon={faCreditCard} size={20} color="rgb(30, 48, 80)" style={{ marginRight: 10 }} />
           <Text
             style={{
-              color: "#000",
-              fontSize: 20,
-              fontStyle: "normal",
-              fontWeight: "500",
+              color: 'black',
+              fontSize: 18,
+              fontStyle: 'normal',
+              fontWeight: '500',
               lineHeight: 36,
-              textAlign: 'left'
+              textAlign: 'left',
             }}
           >
-            Achetez un Food Coins
+            Mastercard 0347
           </Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.main}>
-        <Text style={styles.text2}>Autres</Text>
-      </View>
-      <View>
-        <Picker
-          selectedValue={selectedTransaction}
-          onValueChange={(itemValue, itemIndex) => setSelectedTransaction(itemValue)}
-          style={{
-            width: 313,
-            height: 40,
-            flexShrink: 0,
-            borderRadius: 8,
-            backgroundColor: '#F7F7F7',
-            shadowColor: 'rgba(0, 0, 0, 0.25)',
-            shadowOffset: {
-              width: 0,
-              height: 4,
-            },
-            shadowRadius: 4,
-            shadowOpacity: 2,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginTop: 19,
-          }}
-        >
-          {transactions.map((transaction) => (
-            <Picker.Item key={transaction.value} label={transaction.label} value={transaction.value} />
-          ))}
-        </Picker>
-      </View>
-
-      <Modal visible={modalVisible} animationType="slide" transparent={true}>
-      </Modal>
-      <StatusBar style="auto" />
-    </ScrollView>
+        </View>
+        <View style={styles.main}>
+          <Text style={styles.text2}>Autres</Text>
+        </View>
+        <View>
+          <Picker
+            selectedValue={selectedTransaction}
+            onValueChange={(itemValue, itemIndex) => setSelectedTransaction(itemValue)}
+            style={{
+              width: 313,
+              height: 40,
+              flexShrink: 0,
+              borderRadius: 8,
+              backgroundColor: '#E71C6B',
+              shadowColor: 'rgba(0, 0, 0, 0.25)',
+              shadowOffset: {
+                width: 0,
+                height: 4,
+              },
+              shadowRadius: 4,
+              shadowOpacity: 2,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: 19,
+            }}
+          >
+            {transactions.map((transaction) => (
+              <Picker.Item key={transaction.value} label={transaction.label} value={transaction.value} />
+            ))}
+          </Picker>
+        </View>
+        <Modal visible={modalVisible} animationType="slide" transparent={true}>
+        </Modal>
+        <StatusBar style="auto" />
+      </ScrollView>
+    </Screen>
   );
 }
 
 const styles = {
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
+    // flex: 1,
+    marginTop: 40,
+    // backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
   card: {
-    width: 317,
-    height: 166,
-    flexShrink: 0,
-    borderRadius: 8,
-    backgroundColor: "#FF3C6E",
+    width: 300,
+    height: 150,
+    border: "none",
+    // flexShrink: 0,
+    // borderRadius: 8,
+    // backgroundColor: "#E71C6B",
     alignItems: "center",
     justifyContent: "center",
+    alignSelf: "center",
+    marginTop: 20,
   },
-  text: {
-    color: "#FFF",
-    fontSize: 16,
-    fontWeight: "700",
-    textTransform: "uppercase",
-  },
+  // text: {
+  //   // color: "black",
+  //   fontSize: 16,
+  //   fontWeight: "900",
+  //   textTransform: "uppercase",
+  // },
   text1: {
-    color: "#FFF",
+    color: "black",
     fontSize: 32,
     fontWeight: "700",
     textTransform: "uppercase",
@@ -195,25 +198,38 @@ const styles = {
     alignSelf: "flex-start",
     marginLeft: 25,
   },
-  main1: {
-    marginTop: 20,
-  },
+  // main1: {
+  //   marginTop: 20,
+  //   alignSelf: "center",
+  //   marginTop: 20,
+  // },
   button: {
     display: "flex",
-    width: 143,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
+    // width: 143,
+    paddingVertical: 12,
+    paddingHorizontal: 30,
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
     gap: 10,
     borderRadius: 99,
-    backgroundColor: "#FF3C6E",
-    marginTop:19
+    backgroundColor: "#E71C6B",
+    marginTop:19,
+    alignSelf: "center",
+    marginTop: 20,
   },
   buttonText: {
     color: "#fff",
-    fontWeight: "bold",
+    fontWeight: "500",
     fontSize: 16,
+  },
+  coinContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  
+  icon: {
+    marginLeft: 5,
+    color: "green"
   },
 };
