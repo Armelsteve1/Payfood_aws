@@ -61,7 +61,7 @@ const CheckoutScreen = () => {
         merchantCountryCode: 'US',
         style: 'alwaysDark',
         testEnv: true,
-        returnURL: 'your-app-scheme://',
+        returnURL: 'schema',
       });
 
       if (!error) {
@@ -128,7 +128,7 @@ const CheckoutScreen = () => {
       }));
       setTimeout(() => {
         setLoadingOrder(false);
-        setAllCartItems([]); // Réinitialiser l'état local pour les articles du panier
+        setAllCartItems([]); 
         navigation.navigate("SuccessScreen");
       }, 1500)
     } catch (e) {
