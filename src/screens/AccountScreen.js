@@ -44,13 +44,7 @@ const AccountScreen = () => {
     };
 
     const handleSignOut = async () => {
-        try {
-            await Auth.signOut();
-            console.log('sign out successful')
-            navigation.navigate('Auth');
-        } catch (error) {
-            console.error('Sign-out error:', error);
-        }
+        navigation.navigate('QrCode');
     };
 
     const handleResetPassword = async () => {

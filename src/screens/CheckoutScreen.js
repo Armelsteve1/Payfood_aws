@@ -21,8 +21,8 @@ const CheckoutScreen = () => {
   const [loading, setLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [loadingOrder, setLoadingOrder] = useState(false);
-  const [allCartItems, setAllCartItems] = useState([]); // État local pour les articles du panier
-  const [user, setUser] = useState(null); // État local pour les informations de l'utilisateur
+  const [allCartItems, setAllCartItems] = useState([]);
+  const [user, setUser] = useState(null);
   const navigation = useNavigation();
 
   const fetchPaymentSheetParams = async () => {
@@ -128,7 +128,7 @@ const CheckoutScreen = () => {
       }));
       setTimeout(() => {
         setLoadingOrder(false);
-        setAllCartItems([]); // Réinitialiser l'état local pour les articles du panier
+        setAllCartItems([]);
         navigation.navigate("SuccessScreen");
       }, 1500)
     } catch (e) {
