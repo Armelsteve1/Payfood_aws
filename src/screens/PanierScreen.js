@@ -8,10 +8,21 @@ import AppButton from '../component/AppButton';
 import colors from '../component/configs/colors';
 import CartItems from '../component/CartItems';
 import CheckoutModal from '../component/CheckoutModal';
+import { useNavigation } from '@react-navigation/core';
+
 
 const CartScreen = ({ route }) => {
     const { total = 0, count = 0 } = route.params || {};
     const [modalVisible, setModalVisible] = useState(false);
+
+    const navigation = useNavigation();
+
+    const addOrder = () => {
+        setModalVisible(false);
+        totalPrice= total
+        navigation.navigate("CheckoutScreen");
+    };
+
     return (
         <Screen style={tailwind`flex-1 bg-white`}>
             <AppHead title={`Votre Panier (${count})`} icon="basket-outline" />
@@ -25,7 +36,7 @@ const CartScreen = ({ route }) => {
                         <Text style={styles.totalAmount}>€{total}</Text>
                     </View>
                     <View style={styles.right}>
-                        <AppButton title="Détail" onPress={() => setModalVisible(true)} color="black" />
+                        <AppButton title="Payer" onPress={addOrder} color="black" />
                     </View>
                 </View>
             )}
@@ -41,10 +52,10 @@ const styles = StyleSheet.create({
         marginRight: 20
     },
     right: {
-        flex: 1
+        flex: 1,
     },
     total: {
-        fontSize: 14,
+        fontSize: 20,
         color: colors.title
     },
     totalAmount: {
