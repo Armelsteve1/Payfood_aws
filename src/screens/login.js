@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, Alert, StyleSheet } from 'react-native';
+import { View, Text, Alert, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AppForm from '../component/forms/AppForm';
 import AppFormFeilds from '../component/forms/AppFormFeilds';
@@ -23,6 +23,7 @@ const LoginScreen = () => {
 
     return (
         <Screen style={styles.container}>
+            <Image style={styles.logo} source={require("../assets/logo.png")} />
             <View style={styles.wrapper}>
                 <Text style={styles.wellcomeTo}>
                     Se connecter à Pay<Text style={styles.brand}>Food</Text>
@@ -65,6 +66,10 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.white,
         justifyContent: 'center'
+    },
+    logo: {
+        alignSelf: "center",
+        top: -200
     },
     wrapper: {
         paddingHorizontal: 20,

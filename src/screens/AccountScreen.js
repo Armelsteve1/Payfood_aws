@@ -10,6 +10,16 @@ import { Auth } from 'aws-amplify';
 import { useNavigation } from '@react-navigation/native';
 import colors from '../component/configs/colors';
 
+const SavedPlaces = ({ title, text, Icon }) => (
+    <TouchableOpacity style={tailwind`flex-row items-center my-3`}>
+        <Icon />
+        <View style={tailwind`ml-5`}>
+            <Text style={tailwind`text-gray-800`}>{title}</Text>
+            <Text style={tailwind`text-gray-600 text-xs mt-1`}>{text}</Text>
+        </View>
+    </TouchableOpacity>
+)
+
 const AccountScreen = () => {
     const navigation = useNavigation();
     const [user, setUser] = useState(null);
@@ -70,7 +80,7 @@ const AccountScreen = () => {
 
     return (
         <Screen style={tailwind`flex-1 bg-white`}>
-            <AppHead title={`Mon compte`} icon="settings-outline" />
+            <AppHead title={`Mon compte`} icon="person-outline" />
             <View style={tailwind`justify-center items-center`}>
                 <View style={tailwind`rounded-full overflow-hidden w-40 h-40 mt-2`}>
                     <Image source={require('../assets/images/avatar.gif')} style={tailwind`w-40 h-40`} />
@@ -88,7 +98,21 @@ const AccountScreen = () => {
             <ScrollView style={tailwind`flex-1`} showsVerticalScrollIndicator={true}>
                 <View style={tailwind`mx-4 border-t border-t-2 mt-5 border-gray-100`}>
                     <Text style={tailwind`text-gray-800 mt-2 text-lg mb-2`}>Favoris</Text>
-                    {/* SavedPlaces components... */}
+                    <SavedPlaces
+                        title="Accueil"
+                        text="Aller à l'accueil"
+                        Icon={() => <AntDesign name="home" size={24} color={colors.primary} onPress={() => navigation.navigate('Accueil')} />}
+                    />
+                    <SavedPlaces
+                        title="Mon porte monnaie"
+                        text="Voir méthodes de paiement disponibles"
+                        Icon={() => <Ionicons name="wallet" size={24} color={colors.primary} onPress={() => navigation.navigate('Portefeuille')} />}
+                    />
+                    <SavedPlaces
+                        title="Mes préférences"
+                        text="Gérer les paramètres de mon compte"
+                        Icon={() => <Ionicons name="build" size={24} color={colors.primary} onPress={() => navigation.navigate('Preferences')} />}
+                    />
                 </View>
                 <View style={tailwind`mx-4 border-t border-t-2 mt-5 border-gray-100`}>
                     <Text style={tailwind`text-gray-800 mt-2 text-lg`}>Autres options</Text>
