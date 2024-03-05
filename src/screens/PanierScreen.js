@@ -19,7 +19,7 @@ const CartScreen = ({ route }) => {
 
     const addOrder = () => {
         setModalVisible(false);
-        totalPrice= total
+        totalPrice = total;
         navigation.navigate("CheckoutScreen");
     };
 
@@ -30,12 +30,12 @@ const CartScreen = ({ route }) => {
                 <CartItems />
             </View>
             {!!count > 0 && (
-                <View style={tailwind`flex-row items-center px-5 pb-5`}>
-                    <View style={styles.left}>
+                <View style={tailwind`flex-row justify-between items-center px-5 pb-5`}>
+                    <View style={styles.totalContainer}>
                         <Text style={styles.total}>Total</Text>
-                        <Text style={styles.totalAmount}>€{total}</Text>
+                        <Text style={styles.totalAmount}>{total}€</Text>
                     </View>
-                    <View style={styles.right}>
+                    <View style={styles.buttonContainer}>
                         <AppButton title="Payer" onPress={addOrder} color="black" />
                     </View>
                 </View>
@@ -48,19 +48,22 @@ const CartScreen = ({ route }) => {
 }
 
 const styles = StyleSheet.create({
-    left: {
-        marginRight: 20
+    totalContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
-    right: {
-        flex: 1,
+    buttonContainer: {
+        marginLeft: 20,
+        width: 150
     },
     total: {
         fontSize: 20,
-        color: colors.title
+        color: colors.title,
+        marginRight: 10,
     },
     totalAmount: {
         fontSize: 23,
     },
-})
+});
 
 export default CartScreen;
