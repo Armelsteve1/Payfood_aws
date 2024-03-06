@@ -15,6 +15,7 @@ const LoginScreen = () => {
     const handleLogin = async (values) => {
         try {
             await signIn(values.email, values.password);
+            navigation.navigate('Accueil');
             console.log('✅ Success');
         } catch (error) {
             Alert.alert('Erreur de connexion', error.message);
@@ -26,7 +27,7 @@ const LoginScreen = () => {
             <Image style={styles.logo} source={require("../assets/logo.png")} />
             <View style={styles.wrapper}>
                 <Text style={styles.wellcomeTo}>
-                    Se connecter à Pay<Text style={styles.brand}>Food</Text>
+                    Se connecter à Payfood
                 </Text>
                 <View style={styles.form}>
                     <AppForm

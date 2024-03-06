@@ -27,15 +27,10 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     logo: {
-        height: 200,
-        width: 150,
-        resizeMode: 'contain',
         alignSelf: "center",
-        position: 'absolute',
-        top: 10
+        top: -550
     },
     image: {
-        // width: '100%',
         height: '100%',
         justifyContent: 'flex-end',
     },
