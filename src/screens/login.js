@@ -59,6 +59,7 @@ const LoginScreen = () => {
           </Text>
         </Text>
       </View>
+      {/* <Image style={styles.gif} source={require('../../assets/gimme-food.gif')} /> */}
     </Screen>
   );
 };
