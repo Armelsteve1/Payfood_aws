@@ -4,7 +4,7 @@ import { Auth } from 'aws-amplify';
 import { useNavigation } from '@react-navigation/native';
 
 import AppForm from '../component/forms/AppForm';
-import AppFormFields from '../component/forms/AppFormFields';
+import AppFormFields from '../component/forms/AppFormFeilds';
 import AppSubmitButton from '../component/forms/AppSubmitButton';
 
 import Screen from '../component/Screen';

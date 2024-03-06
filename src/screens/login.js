@@ -3,7 +3,7 @@ import { View, Text, Alert, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import AppForm from '../component/forms/AppForm';
-import AppFormFields from '../component/forms/AppFormFields';
+import AppFormFields from '../component/forms/AppFormFeilds';
 import AppSubmitButton from '../component/forms/AppSubmitButton';
 
 import colors from '../../src/component/configs/colors';
