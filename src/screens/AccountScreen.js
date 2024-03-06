@@ -9,6 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Auth } from 'aws-amplify';
 import { useNavigation } from '@react-navigation/native';
 import colors from '../component/configs/colors';
+import EditProfileScreen from './EditProfileScreen';
 
 const SavedPlaces = ({ title, text, Icon }) => (
     <TouchableOpacity style={tailwind`flex-row items-center my-3`}>
@@ -44,7 +45,7 @@ const AccountScreen = () => {
     };
 
     const handleSignOut = async () => {
-        navigation.navigate('QrCode');
+        navigation.navigate('Auth');
     };
 
     const handleResetPassword = async () => {
@@ -89,7 +90,7 @@ const AccountScreen = () => {
                     <Text style={tailwind`text-3xl font-bold`}>{user?.displayName}</Text>
                     <TouchableOpacity onPress={toggleEditProfileModal} style={{ marginLeft: 10, textDecorationLine: 'none' }}>
                         <Text style={{ textDecorationLine: 'none' }}>
-                            <AntDesign name="edit" size={24} color={colors.primary} />
+                            <Ionicons name="create-outline" size={24} color={colors.primary} />
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -144,11 +145,10 @@ const AccountScreen = () => {
                     height: 300,
                     backgroundColor: 'white',
                 }}>
-                    {/* EditProfileScreen component... */}
+                    <EditProfileScreen onClose={toggleEditProfileModal} />
                 </View>
             </Modal>
         </Screen>
     );
 }
-
 export default AccountScreen;
