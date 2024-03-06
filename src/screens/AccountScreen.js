@@ -11,16 +11,6 @@ import { useNavigation } from '@react-navigation/native';
 import colors from '../component/configs/colors';
 import EditProfileScreen from './EditProfileScreen';
 
-const SavedPlaces = ({ title, text, Icon }) => (
-    <TouchableOpacity style={tailwind`flex-row items-center my-3`}>
-        <Icon />
-        <View style={tailwind`ml-5`}>
-            <Text style={tailwind`text-gray-800`}>{title}</Text>
-            <Text style={tailwind`text-gray-600 text-xs mt-1`}>{text}</Text>
-        </View>
-    </TouchableOpacity>
-)
-
 const AccountScreen = () => {
     const navigation = useNavigation();
     const [user, setUser] = useState(null);
@@ -45,8 +35,15 @@ const AccountScreen = () => {
     };
 
     const handleSignOut = async () => {
-        navigation.navigate('Auth');
-    };
+        try {
+          await Auth.signOut();
+          navigation.navigate('Auth');
+          console.log('User signed out succesfully.');
+        } catch (error) {
+          console.error('Error signing out:', error);
+        }
+      };
+      
 
     const handleResetPassword = async () => {
         try {
@@ -102,17 +99,20 @@ const AccountScreen = () => {
                     <SavedPlaces
                         title="Accueil"
                         text="Aller à l'accueil"
-                        Icon={() => <AntDesign name="home" size={24} color={colors.primary} onPress={() => navigation.navigate('Accueil')} />}
-                    />
+                        Icon={() => <AntDesign name="home" size={24} color={colors.primary} />}
+                        onPress={() => navigation.navigate('Accueil')}
+                        />
                     <SavedPlaces
                         title="Mon porte monnaie"
                         text="Voir méthodes de paiement disponibles"
-                        Icon={() => <Ionicons name="wallet" size={24} color={colors.primary} onPress={() => navigation.navigate('Portefeuille')} />}
+                        Icon={() => <Ionicons name="wallet" size={24} color={colors.primary}/>}
+                        onPress={() => navigation.navigate('Portefeuille')}
                     />
                     <SavedPlaces
                         title="Mes préférences"
                         text="Gérer les paramètres de mon compte"
-                        Icon={() => <Ionicons name="build" size={24} color={colors.primary} onPress={() => navigation.navigate('Preferences')} />}
+                        Icon={() => <Ionicons name="build" size={24} color={colors.primary}/>}
+                        onPress={() => navigation.navigate('Preferences')} 
                     />
                 </View>
                 <View style={tailwind`mx-4 border-t border-t-2 mt-5 border-gray-100`}>
@@ -151,4 +151,18 @@ const AccountScreen = () => {
         </Screen>
     );
 }
+
+const SavedPlaces = ({ title, text, Icon, onPress }) => (
+    <TouchableOpacity
+      style={tailwind`flex-row items-center my-3`}
+      onPress={onPress}
+    >
+      <Icon />
+      <View style={tailwind`ml-5`}>
+        <Text style={tailwind`text-gray-800`}>{title}</Text>
+        <Text style={tailwind`text-gray-600 text-xs mt-1`}>{text}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+
 export default AccountScreen;
