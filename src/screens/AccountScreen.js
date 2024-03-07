@@ -14,7 +14,7 @@ const AccountScreen = () => {
   const navigation = useNavigation();
   const [user, setUser] = useState(null);
   const [isEditProfileModalVisible, setIsEditProfileModalVisible] = useState(false);
-
+    const [isRestaurateur, setRestaurateur] = useState(null)
   useEffect(() => {
     checkUser();
   }, []);
@@ -60,16 +60,6 @@ const AccountScreen = () => {
       console.log('User signed out successfully.');
     } catch (error) {
       console.error('Error signing out:', error);
-    }
-  };
-
-  const handleResetPassword = async () => {
-    try {
-      await Auth.forgotPassword(user?.email);
-      Alert.alert('Succès', 'Un e-mail de réinitialisation du mot de passe a été envoyé.');
-      console.log('Reset password email sent');
-    } catch (error) {
-      console.error('Password reset error:', error);
     }
   };
   

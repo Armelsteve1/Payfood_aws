@@ -16,12 +16,12 @@ const QRCodeGenerator = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Générateur de QR Code pour le Menu</Text>
-      {/* <TextInput
+      <TextInput
         style={styles.input}
         placeholder="Entrez l'URL de votre menu"
         value={menuUrl}
         onChangeText={setMenuUrl}
-      /> */}
+      />
       <TouchableOpacity style={styles.button} onPress={generateQRCode}>
         <Text style={styles.buttonText}>Générer le QR Code</Text>
       </TouchableOpacity>
