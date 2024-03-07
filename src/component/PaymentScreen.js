@@ -27,7 +27,8 @@ const PaymentScreen = ({ children }) => {
     
     return loading ? (
         <View style={tailwind`flex-1 bg-white items-center justify-center`}>
-            <ActivityIndicator size="large" color="#000" />
+        <ActivityIndicator size="large" color="#000" />
+        <Text style={tailwind`mt-2 text-lg`}>Chargement...</Text>
         </View>
     ) : (
         <ScrollView

@@ -52,7 +52,7 @@ const RestaurantItem = () => {
     }
 
     return (
-        <View>
+        <View style={tailwind`mt-8`}>
             {Array.isArray(restaurantData) && restaurantData.map((item, index) => (
                 <RestaurantItemCard key={index} item={item} onPress={() => handlePress(item)} />
             ))}
