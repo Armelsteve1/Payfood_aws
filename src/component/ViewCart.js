@@ -5,7 +5,7 @@ import tailwind from 'tailwind-react-native-classnames';
 
 const ViewCart = ({ total ,count}) => {
     const navigation = useNavigation();
-    console.log('cont :', count);
+    console.log('count :', count);
 
     return total > 0 ? (
       <TouchableOpacity

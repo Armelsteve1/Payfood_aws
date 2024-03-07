@@ -10,7 +10,7 @@ function AppHead({ title, icon = null }) {
     return (
         <View style={styles.topBar}>
             <TouchableOpacity style={styles.topBar_icon} onPress={() => navigation.goBack()}>
-                <Ionicons name="arrow-back" size={26} color={colors.black} />
+                <Ionicons name="arrow-back" size={26} color="black" />
             </TouchableOpacity>
             <View style={styles.topBar_center}>
                 {icon && <Ionicons style={styles.icon} name={icon} size={27} color="black" />}
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     text: {
-        color: colors.black,
+        color: colors.secondary,
         textAlign: 'center',
         fontSize: 17
     },
