@@ -145,8 +145,10 @@ export default function WalletScreen() {
         <View style={styles.main}>
           <Text style={styles.text2}>Promotions et réductions</Text>
         </View>
-        <View style={styles.promotionContainer}>
-          <Text style={styles.promotionText}>Profitez de 10% de bonus sur chaque recharge !</Text>
+        <View style={styles.couponContainer}>
+          <View style={styles.promotionContainer}>
+            <Text style={styles.promotionText}>Profitez de 10% de bonus sur chaque recharge !</Text>
+          </View>
         </View>
         <StatusBar style="auto" />
       </ScrollView>
@@ -223,19 +225,26 @@ const styles = {
   },
   promotionContainer: {
     width: 313,
-    borderBottomWidth: 1,
-    borderBottomColor: 'grey',
+    // borderBottomWidth: 1,
+    // borderBottomColor: 'grey',
     marginTop: 19,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 10,
   },
   promotionText: {
-    color: 'green',
-    fontSize: 18,
+    color: 'gray',
+    fontSize: 16,
     fontStyle: 'italic',
     fontWeight: '500',
     lineHeight: 36,
     textAlign: 'left',
+  },
+  couponContainer: {
+    // marginVertical: 10,
+    // paddingHorizontal: 15,
+    // paddingVertical: 10,
+    // borderWidth: 2,
+    // borderColor: '#E71C6B',
   },
 };
