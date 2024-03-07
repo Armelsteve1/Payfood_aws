@@ -17,7 +17,7 @@ const LoginScreen = () => {
   const handleLogin = async (values) => {
     try {
       await signIn(values.email, values.password);
-      navigation.navigate('Accueil');
+      navigation.navigate('Main');
       console.log('✅ Success');
     } catch (error) {
       Alert.alert('Erreur de connexion', error.message);

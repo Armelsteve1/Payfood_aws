@@ -153,7 +153,7 @@ function AccountSettingsScreen({ navigation }) {
                                     <Ionicons
                                         name={star <= feedbackRating ? 'star' : 'star-outline'}
                                         size={30}
-                                        color={colors.primary}
+                                        color= "rgb(242, 204, 42)"
                                     />
                                 </TouchableOpacity>
                             ))}

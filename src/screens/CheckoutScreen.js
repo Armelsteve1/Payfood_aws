@@ -149,7 +149,7 @@ const CheckoutScreen = () => {
         ) : (
           <>
             <PaymentScreen>
-              <AppHead title={`Checkout`} />
+              <AppHead title={`Paiement`} icon="cash-outline" />
               <View style={styles.Checkout}>
                 <PaymentButton
                   variant="primary"

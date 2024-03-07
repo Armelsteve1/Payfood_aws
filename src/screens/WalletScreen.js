@@ -9,17 +9,13 @@ import tailwind from 'tailwind-react-native-classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCoins } from '@fortawesome/free-solid-svg-icons';
 import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
-
+import { faAppleAlt } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { Alert } from 'react-native';
 
 export default function WalletScreen() {
-  const [selectedTransaction, setSelectedTransaction] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [rechargeAmount] = useState('');
-
-  const transactions = [
-    { label: 'Transaction 1', value: 'transaction1' },
-    { label: 'Transaction 2', value: 'transaction2' },
-  ];
 
   const handleRecharge = () => {
     console.log("Montant de recharge :", rechargeAmount);
@@ -36,9 +32,6 @@ export default function WalletScreen() {
             <FontAwesomeIcon icon={faCoins} size={24} color="rgb(242, 204, 42)" style={styles.icon} />
           </View>
         </Card>
-        {/* <View style={styles.main}>
-          <Text style={styles.text2}>Food Coins</Text>
-        </View> */}
         <View>
           <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}>
             <Text style={styles.buttonText}>Rechargez vos Food Coins</Text>
@@ -49,41 +42,6 @@ export default function WalletScreen() {
         <View style={styles.main}>
           <Text style={styles.text2}>Moyens de paiement</Text>
         </View>
-        {/* <View>
-          <TouchableOpacity
-            style={{
-              width: 313,
-              height: 40,
-              flexShrink: 0,
-              borderRadius: 8,
-              // backgroundColor: "#E71C6B",
-              shadowColor: "rgba(0, 0, 0, 0.25)",
-              shadowOffset: {
-                width: 0,
-                height: 4,
-              },
-              shadowRadius: 4,
-              shadowOpacity: 2,
-              marginTop: 19,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Text
-              style={{
-                color: "#000",
-                fontSize: 20,
-                fontStyle: "normal",
-                fontWeight: "500",
-                lineHeight: 36,
-                textAlign: 'left'
-              }}
-            >
-              Apple pay
-            </Text>
-          </TouchableOpacity>
-        </View> */}
         <View
           style={{
             width: 313,
@@ -109,39 +67,62 @@ export default function WalletScreen() {
             Mastercard 0347
           </Text>
         </View>
-        <View style={styles.main}>
-          <Text style={styles.text2}>Autres</Text>
-        </View>
-        <View>
-          <Picker
-            selectedValue={selectedTransaction}
-            onValueChange={(itemValue, itemIndex) => setSelectedTransaction(itemValue)}
-            style={{
-              width: 313,
-              height: 40,
-              flexShrink: 0,
-              borderRadius: 8,
-              backgroundColor: '#E71C6B',
-              shadowColor: 'rgba(0, 0, 0, 0.25)',
-              shadowOffset: {
-                width: 0,
-                height: 4,
-              },
-              shadowRadius: 4,
-              shadowOpacity: 2,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: 19,
+        <View
+          style={{
+            width: 313,
+            flexDirection: 'row',
+            alignItems: 'center',
+            borderBottomWidth: 1,
+            borderBottomColor: 'grey',
+            marginTop: 19,
+            paddingHorizontal: 10,
+          }}
+        >
+          <TouchableOpacity
+            style={{ flexDirection: 'row', alignItems: 'center' }}
+            onPress={() => {
+              Alert.alert(
+                'Apple Pay',
+                'Le paiement par Apple pay est autorisé.',
+                [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+                { cancelable: false }
+              );
             }}
           >
-            {transactions.map((transaction) => (
-              <Picker.Item key={transaction.value} label={transaction.label} value={transaction.value} />
-            ))}
-          </Picker>
+            <FontAwesomeIcon icon={faAppleAlt} size={20} color="rgb(30, 48, 80)" style={{ marginRight: 10 }} />
+            <Text
+              style={{
+                color: 'black',
+                fontSize: 18,
+                fontStyle: 'normal',
+                fontWeight: '500',
+                lineHeight: 36,
+                textAlign: 'left',
+              }}
+            > 
+              Apple Pay
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ marginLeft: 'auto' }}
+            onPress={() => {
+              Alert.alert(
+                'Apple Pay',
+                'You can pay with Apple Pay.',
+                [{ text: 'Je comprends.', onPress: () => console.log('OK Pressed') }],
+                { cancelable: false }
+              );
+            }}
+          >
+            <FontAwesomeIcon icon={faArrowRight} size={20} color="rgb(30, 48, 80)" />
+          </TouchableOpacity>
         </View>
-        <Modal visible={modalVisible} animationType="slide" transparent={true}>
-        </Modal>
+        <View style={styles.main}>
+          <Text style={styles.text2}>Promotions et réductions</Text>
+        </View>
+        <View style={styles.promotionContainer}>
+          <Text style={styles.promotionText}>Get 10% extra on every recharge!</Text>
+        </View>
         <StatusBar style="auto" />
       </ScrollView>
     </Screen>
@@ -150,9 +131,7 @@ export default function WalletScreen() {
 
 const styles = {
   container: {
-    // flex: 1,
     marginTop: 40,
-    // backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -160,20 +139,11 @@ const styles = {
     width: 300,
     height: 150,
     border: "none",
-    // flexShrink: 0,
-    // borderRadius: 8,
-    // backgroundColor: "#E71C6B",
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "center",
     marginTop: 20,
   },
-  // text: {
-  //   // color: "black",
-  //   fontSize: 16,
-  //   fontWeight: "900",
-  //   textTransform: "uppercase",
-  // },
   text1: {
     color: "black",
     fontSize: 32,
@@ -198,14 +168,8 @@ const styles = {
     alignSelf: "flex-start",
     marginLeft: 25,
   },
-  // main1: {
-  //   marginTop: 20,
-  //   alignSelf: "center",
-  //   marginTop: 20,
-  // },
   button: {
     display: "flex",
-    // width: 143,
     paddingVertical: 12,
     paddingHorizontal: 30,
     justifyContent: "center",
@@ -231,5 +195,22 @@ const styles = {
   icon: {
     marginLeft: 5,
     color: "green"
+  },
+  promotionContainer: {
+    width: 313,
+    borderBottomWidth: 1,
+    borderBottomColor: 'grey',
+    marginTop: 19,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+  },
+  promotionText: {
+    color: 'green',
+    fontSize: 18,
+    fontStyle: 'italic',
+    fontWeight: '500',
+    lineHeight: 36,
+    textAlign: 'left',
   },
 };

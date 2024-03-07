@@ -7,7 +7,6 @@ import AppHead from '../component/AppHead';
 import AppButton from '../component/AppButton';
 import colors from '../component/configs/colors';
 import CartItems from '../component/CartItems';
-import CheckoutModal from '../component/CheckoutModal';
 import { useNavigation } from '@react-navigation/core';
 
 
@@ -40,9 +39,6 @@ const CartScreen = ({ route }) => {
                     </View>
                 </View>
             )}
-            <Modal visible={modalVisible} animationType="slide" transparent={true}>
-                <CheckoutModal setModalVisible={setModalVisible} total={total} />
-            </Modal>
         </Screen>
     );
 }
