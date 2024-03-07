@@ -21,7 +21,7 @@ const PaymentButton = ({ title, variant = 'default', disabled, loading, onPress,
                 {...props}
             >
                 {loading ? (
-                    <ActivityIndicator color={colors.primary} size="small" />
+                    <ActivityIndicator color={colors.primary} size="big" />
                 ) : (
                     <Text style={[styles.text, variant === 'primary' && styles.textPrimary]}>
                         {title}
