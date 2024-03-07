@@ -13,12 +13,19 @@ const DetailsScreen = ({ route, navigation }) => {
     const [mapActive, setMapActive] = useState(false);
     const [totalPrice, setTotalPrice] = useState(0);
     const [getAllItems, setGetAllItems] = useState([]);
+    const [menuData, setMenuData] = useState(null);
 
-    const { coordinates, image_url, name, price, rating, review_count, id, menu_id } = route?.params?.item;
+    const handleScan = (data) => {
+        setMenuData(JSON.parse(data));
+    };
+
+    const item = route?.params?.item;
+    const { coordinates, image_url, name, price, rating, review_count, id, menu_id } = item || {};
 
     const handleTotalPrice = (newPrice) => {
         setTotalPrice(newPrice);
     }
+
     const handleTotalItems = (newItems) => {
         setGetAllItems(newItems);
     }
