@@ -4,7 +4,7 @@ import { Card } from "react-native-elements";
 import { StatusBar } from "expo-status-bar";
 import { Picker } from '@react-native-picker/picker';
 import AppHead from '../component/AppHead';
-import Screen from '../component/Screen'
+import Screen from '../component/Screen';
 import tailwind from 'tailwind-react-native-classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCoins } from '@fortawesome/free-solid-svg-icons';
@@ -12,15 +12,40 @@ import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import { faAppleAlt } from '@fortawesome/free-solid-svg-icons';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 export default function WalletScreen() {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [rechargeAmount] = useState('');
+  const [rechargeAmount, setRechargeAmount] = useState('0,00');
+  const navigation = useNavigation();
 
   const handleRecharge = () => {
-    console.log("Montant de recharge :", rechargeAmount);
-    setModalVisible(false);
+    Alert.prompt('Rechargez vos food coins', 'Veuillez saisir le montant', (amount) => {
+      if (!amount) {
+        Alert.alert('Erreur', 'Veuillez saisir un montant.');
+        return;
+      }
+  
+      Alert.alert(
+        'Félicitations !',
+        `Vous n'êtez pas si loin ! Vous pouvez dans pas longtemps payer avec vos ${amount} coins. Procéder au paiement?`,
+        [
+          {
+            text: 'Annuler',
+            style: 'cancel',
+          },
+          {
+            text: 'Payer',
+            onPress: () => {
+              console.log("Montant de recharge :", amount);
+              setRechargeAmount(amount);
+              navigation.navigate('CheckoutScreen');
+            },
+          },
+        ],
+      );
+    });
   };
+  
 
   return (
     <Screen style={tailwind`flex-1 bg-white`}>
@@ -28,14 +53,14 @@ export default function WalletScreen() {
       <View contentContainerStyle={styles.cardContainer}>
         <Card containerStyle={styles.card}>
           <View style={styles.coinContainer}>
-            <Text style={styles.text1}>15,00</Text>
+        <Text style={styles.text1}>{rechargeAmount}</Text>
             <FontAwesomeIcon icon={faCoins} size={24} color="rgb(242, 204, 42)" style={styles.icon} />
           </View>
         </Card>
         <View>
-          <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}>
-            <Text style={styles.buttonText}>Rechargez vos Food Coins</Text>
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleRecharge}>
+      <Text style={styles.buttonText}>Rechargez vos Food Coins</Text>
+    </TouchableOpacity>
         </View>
       </View>
       <ScrollView contentContainerStyle={styles.container}>
