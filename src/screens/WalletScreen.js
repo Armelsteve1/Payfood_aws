@@ -146,7 +146,7 @@ export default function WalletScreen() {
           <Text style={styles.text2}>Promotions et réductions</Text>
         </View>
         <View style={styles.promotionContainer}>
-          <Text style={styles.promotionText}>Get 10% extra on every recharge!</Text>
+          <Text style={styles.promotionText}>Profitez de 10% de bonus sur chaque recharge !</Text>
         </View>
         <StatusBar style="auto" />
       </ScrollView>
