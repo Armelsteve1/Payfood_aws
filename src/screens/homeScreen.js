@@ -14,7 +14,7 @@ const HomeScreen = () => {
     return (
         <Screen style={tailwind`bg-white flex-1`}>
             <Image style={styles.logo} source={require('../assets/logo.png')} />
-            {/* <SearchBar setCity={setCity} city={city} /> */}
+            <SearchBar setCity={setCity} city={city} />
             {/* <Categories/> */}
             <ScrollView style={tailwind`flex-1`} showsVerticalScrollIndicator={false}>
             <RestaurantItem restaurantData={restaurantData} />
