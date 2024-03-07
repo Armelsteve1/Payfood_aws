@@ -19,19 +19,39 @@ const AccountScreen = () => {
     checkUser();
   }, []);
 
-  const checkUser = async () => {
-    try {
-      const userData = await Auth.currentAuthenticatedUser();
-      setUser(userData.attributes);
-      console.log(userData.attributes, 'user');
-    } catch (error) {
-      console.log('User is not signed in:', error);
-    }
-  };
+  async function checkUser() {
+      try {
+          const userData = await Auth.currentAuthenticatedUser();
+          setUser(userData.attributes);
+          console.log(userData.attributes, 'user');
+              const groups = userData.signInUserSession.accessToken.payload['cognito:groups'];
+          if (groups && groups.includes('Restaurateur')) {
+              setRestaurateur(true);
+          } else {
+              setRestaurateur(false);
+          }
+      } catch (error) {
+          console.log('user is not signed in');
+      }
+  }
 
   const toggleEditProfileModal = () => {
     setIsEditProfileModalVisible(!isEditProfileModalVisible);
   };
+
+    const handleRestaurant = async () => {
+        navigation.navigate('QrCode');
+    };
+
+    const handleResetPassword = async () => {
+        try {
+            await Auth.forgotPassword(user.email);
+            Alert.alert('Succès', 'Un e-mail de réinitialisation du mot de passe a été envoyé.');
+            console.log("reset pwd email sent")
+        } catch (error) {
+            console.error('Password reset error:', error);
+        }
+    };
 
   const handleSignOut = async () => {
     try {
@@ -52,7 +72,7 @@ const AccountScreen = () => {
       console.error('Password reset error:', error);
     }
   };
-
+  
   const handleDelete = async () => {
     Alert.alert(
       'Attention',
@@ -105,17 +125,21 @@ const AccountScreen = () => {
           ))}
         </View>
         <View style={tailwind`mx-4 border-t border-t-2 mt-5 border-gray-100`}>
-          <Text style={tailwind`text-gray-800 mt-2 text-lg`}>Autres options</Text>
-          {[
-            { text: 'Réinitialiser mon mot de passe', color: colors.gray, onPress: handleResetPassword },
-            { text: 'Se déconnecter', color: colors.gray, onPress: handleSignOut },
-            { text: 'Restaurateur', color: colors.gray, onPress: handleSignOut },
-            { text: 'Supprimer mon compte', color: colors.denger, onPress: handleDelete },
-          ].map((item, index) => (
-            <TouchableOpacity key={index} onPress={item.onPress}>
-              <Text style={{ ...tailwind`text-gray-900 mt-2`, color: item.color }}>{item.text}</Text>
+            <Text style={tailwind`text-gray-800 mt-2 text-lg`}>Autres options</Text>
+            <TouchableOpacity onPress={handleResetPassword}>
+                <Text style={{ ...tailwind`text-gray-900 mt-2`, color: colors.gray }}>Réinitialiser mon mot de passe</Text>
             </TouchableOpacity>
-          ))}
+            <TouchableOpacity onPress={handleSignOut}>
+                <Text style={{ ...tailwind`text-gray-900 mt-2`, color: colors.gray }}>Se déconnecter</Text>
+            </TouchableOpacity>
+            {isRestaurateur && (
+                <TouchableOpacity onPress={handleRestaurant}>
+                    <Text style={{ ...tailwind`text-gray-900 mt-2`, color: colors.gray }}>Restaurateur</Text>
+                </TouchableOpacity>
+            )}
+            <TouchableOpacity onPress={handleDelete}>
+                <Text style={{ ...tailwind`text-gray-900 mt-2`, color: colors.denger }}>Supprimer mon compte</Text>
+            </TouchableOpacity>
         </View>
       </ScrollView>
       <Modal

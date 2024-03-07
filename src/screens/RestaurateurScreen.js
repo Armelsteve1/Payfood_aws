@@ -6,22 +6,22 @@ const QRCodeGenerator = () => {
   const [menuUrl, setMenuUrl] = useState('');
   const [qrCodeValue, setQRCodeValue] = useState('');
 
-  // Fonction pour générer le QR code à partir de l'URL du menu
   const generateQRCode = () => {
     if (menuUrl.trim() !== '') {
-      setQRCodeValue(menuUrl);
+      const newMenuUrl = `https://qxqiytxy36.execute-api.eu-north-1.amazonaws.com/items/rest01/menu01`;
+      setMenuUrl(newMenuUrl);
+      setQRCodeValue(newMenuUrl);
     }
   };
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Générateur de QR Code pour le Menu</Text>
-      <TextInput
+      {/* <TextInput
         style={styles.input}
         placeholder="Entrez l'URL de votre menu"
         value={menuUrl}
         onChangeText={setMenuUrl}
-      />
+      /> */}
       <TouchableOpacity style={styles.button} onPress={generateQRCode}>
         <Text style={styles.buttonText}>Générer le QR Code</Text>
       </TouchableOpacity>
