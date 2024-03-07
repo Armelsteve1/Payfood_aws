@@ -5,16 +5,14 @@ import Screen from '../component/Screen'
 import tailwind from 'tailwind-react-native-classnames';
 import AppHead from '../component/AppHead';
 import { AntDesign } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
 import { Auth } from 'aws-amplify';
 import { useNavigation } from '@react-navigation/native';
 import colors from '../component/configs/colors';
-
 const AccountScreen = () => {
     const navigation = useNavigation();
     const [user, setUser] = useState(null);
     const [isEditProfileModalVisible, setIsEditProfileModalVisible] = useState(false);
-
+    const [isRestaurateur, setRestaurateur] = useState(false);
     useEffect(() => {
         checkUser();
     }, []);
@@ -24,19 +22,33 @@ const AccountScreen = () => {
             const userData = await Auth.currentAuthenticatedUser();
             setUser(userData.attributes);
             console.log(userData.attributes, 'user');
+                const groups = userData.signInUserSession.accessToken.payload['cognito:groups'];
+            if (groups && groups.includes('Restaurateur')) {
+                setRestaurateur(true);
+            } else {
+                setRestaurateur(false);
+            }
         } catch (error) {
             console.log('user is not signed in');
         }
     }
+    
 
     const toggleEditProfileModal = () => {
         setIsEditProfileModalVisible(!isEditProfileModalVisible);
     };
 
-    const handleSignOut = async () => {
+    const handleRestaurant = async () => {
         navigation.navigate('QrCode');
     };
-
+    const handleSignOut = async () => {
+        try {
+            await Auth.signOut();
+            console.log('sign out successful');
+        } catch (error) {
+            console.error('Sign-out error:', error);
+        }
+    };
     const handleResetPassword = async () => {
         try {
             await Auth.forgotPassword(user.email);
@@ -98,9 +110,11 @@ const AccountScreen = () => {
                     <TouchableOpacity onPress={handleSignOut}>
                         <Text style={{ ...tailwind`text-gray-900 mt-2`, color: colors.gray }}>Se déconnecter</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={handleSignOut}>
-                        <Text style={{ ...tailwind`text-gray-900 mt-2`, color: colors.gray }}>Restaurateur</Text>
-                    </TouchableOpacity>
+                    {isRestaurateur && (
+                        <TouchableOpacity onPress={handleRestaurant}>
+                            <Text style={{ ...tailwind`text-gray-900 mt-2`, color: colors.gray }}>Restaurateur</Text>
+                        </TouchableOpacity>
+                    )}
                     <TouchableOpacity onPress={handleDelete}>
                         <Text style={{ ...tailwind`text-gray-900 mt-2`, color: colors.denger }}>Supprimer mon compte</Text>
                     </TouchableOpacity>
