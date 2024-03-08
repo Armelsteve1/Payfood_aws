@@ -18,13 +18,22 @@ const CameraScanner = () => {
 
   const handleBarCodeScannedInternal = ({ data }) => {
     setScanned(true);
-    setScannedData(data);
-    navigateToDetailsScreen(data);
+    fetchMenuData(data)
   };
-  console.log (data,scannedData, 'data scanner')
-    const navigateToDetailsScreen = (data) => {
-    navigation.navigate('DetailsScreen', { scannedData: data });
+  const fetchMenuData = async (menuUrl) => {
+    try {
+      const response = await fetch(menuUrl);
+      const data = await response.json();
+      console.log(data,'valeur de scannedData 111')
+      navigation.navigate('DetailsScreen', data );
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données du menu:', error);
+    }
   };
+  //   const navigateToDetailsScreen = (data) => {
+  //     console.log('data scanner',scannedData)
+  //   navigation.navigate('DetailsScreen', { scannedData: data });
+  // };
   if (hasPermission === null) {
     return <View />;
   }
@@ -37,14 +46,14 @@ const CameraScanner = () => {
     );
   }
 
-  if (scanned) {
-    return (
-      <View style={styles.container}>
-        <Text>Données scannées : {scannedData}</Text>
-        {/* Redirection vers DetailsScreen avec les données scannées */}
-      </View>
-    );
-  }
+  // if (scanned) {
+  //   return (
+  //     <View style={styles.container}>
+  //       <Text>Données scannées : {scannedData}</Text>
+  //       {/* Redirection vers DetailsScreen avec les données scannées */}
+  //     </View>
+  //   );
+  // }
 
   return (
     <View style={styles.container}>
