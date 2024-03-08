@@ -10,7 +10,8 @@ const MenuItems = ({ resName, resImage, id, menu_id, handleTotalPrice, handleTot
     const { cartItems, setCartItems } = useContext(CartContext);
 
     useEffect(() => {
-        fetch(`https://qxqiytxy36.execute-api.eu-north-1.amazonaws.com/items/${id}/${menu_id}`)
+        const url = `https://qxqiytxy36.execute-api.eu-north-1.amazonaws.com/items/${id}/${menu_id}`
+        fetch(url)
             .then(response => response.json())
             .then(data => setFoods(data.items))
             .catch(error => console.error('Il y avait une erreur lors de la récupération des données de l\'API', error));

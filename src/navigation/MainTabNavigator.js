@@ -4,7 +4,6 @@ import colors from '../component/configs/colors';
 import HomeScreen from '../screens/homeScreen'
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-// import BrowseScreen from '../screens/BrowseScreen';
 import CartScreen from '../screens/PanierScreen';
 import WalletScreen from '../screens/WalletScreen';
 import AccountScreen from '../screens/AccountScreen';
@@ -43,11 +42,10 @@ const MainTabNavigator = () => {
                 }}
             /> */}
             <Tab.Screen name="Panier" component={CartScreen}
-                options={({ navigation }) => ({
+                options={{
                     tabBarIcon: ({ color, size }) => (
                     <Ionicons name="basket-outline" color={color} size={size} />                    )
-                    // tabBarButton: () => <TabCartButton onPress={() => navigation.navigate('Panier')} />
-                })}
+                }}
             />
             <Tab.Screen name="Scan" component={ScanScreen}
                 options={{

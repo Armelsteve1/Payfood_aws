@@ -9,16 +9,27 @@ import { Entypo } from '@expo/vector-icons';
 import MenuItems from '../component/MenuItems';
 import ViewCart from '../component/ViewCart';
 import CartItems from '../component/CartItems';
+
 const DetailsScreen = ({ route, navigation }) => {
     const [mapActive, setMapActive] = useState(false);
     const [totalPrice, setTotalPrice] = useState(0);
     const [getAllItems, setGetAllItems] = useState([]);
+    const [menuData, setMenuData] = useState(null);
 
-    const { coordinates, image_url, name, price, rating, review_count, id, menu_id } = route?.params?.item;
+    const handleScan = (data) => {
+        setMenuData(data);
+        console.log('menu data',menuData)
+    };
+
+    console.log(menuData);
+
+    const item = route?.params?.item;
+    const { coordinates, image_url, name, price, rating, review_count, id, menu_id } = item || {};
 
     const handleTotalPrice = (newPrice) => {
         setTotalPrice(newPrice);
     }
+
     const handleTotalItems = (newItems) => {
         setGetAllItems(newItems);
     }
@@ -29,11 +40,11 @@ const DetailsScreen = ({ route, navigation }) => {
                 <Ionicons name="arrow-back" size={18} color={colors.black} />
             </TouchableOpacity>
             <View style={styles.mapImageWrapper}>
-            {mapActive ? (
+                <Image source={{ uri: image_url }} style={styles.image} />
+            {/* {mapActive ? (
                     <RestaurantMap coordinates={coordinates} title={name} />
                 ) : (
-                    <Image source={{ uri: image_url }} style={styles.image} />
-                )}
+                )} */}
             </View>
 
             <ScrollView showsVerticalScrollIndicator={false} style={tailwind`z-20`}>

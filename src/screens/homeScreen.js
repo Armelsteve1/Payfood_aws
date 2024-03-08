@@ -1,5 +1,5 @@
 import React, {useState } from 'react';
-import { ScrollView} from 'react-native';
+import { ScrollView, Image, StyleSheet} from 'react-native';
 import Screen from '../component/Screen'
 import SearchBar from '../component/SearchBar'
 import RestaurantItem from '../component/RestaurantItem'
@@ -13,13 +13,21 @@ const HomeScreen = () => {
 
     return (
         <Screen style={tailwind`bg-white flex-1`}>
-            {/* <SearchBar setCity={setCity} city={city} /> */}
-            <Categories/>
+            <Image style={styles.logo} source={require('../assets/logo.png')} />
+            <SearchBar setCity={setCity} city={city} />
+            {/* <Categories/> */}
             <ScrollView style={tailwind`flex-1`} showsVerticalScrollIndicator={false}>
             <RestaurantItem restaurantData={restaurantData} />
             </ScrollView>
         </Screen>
     );
 }
+
+const styles = StyleSheet.create({
+    logo: {
+      alignSelf: 'center',
+      top: 10,
+    },
+});
 
 export default HomeScreen;

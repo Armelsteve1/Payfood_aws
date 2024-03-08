@@ -10,6 +10,9 @@ import AppHead from '../component/AppHead';
 import { useNavigation } from '@react-navigation/core';
 import { API, graphqlOperation } from 'aws-amplify';
 import { addOrder as addOrderMutation } from '../graphql/mutations';
+import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+
 
 const CheckoutScreen = () => {
   const {
@@ -21,8 +24,8 @@ const CheckoutScreen = () => {
   const [loading, setLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [loadingOrder, setLoadingOrder] = useState(false);
-  const [allCartItems, setAllCartItems] = useState([]); // État local pour les articles du panier
-  const [user, setUser] = useState(null); // État local pour les informations de l'utilisateur
+  const [allCartItems, setAllCartItems] = useState([]);
+  const [user, setUser] = useState(null);
   const navigation = useNavigation();
 
   const fetchPaymentSheetParams = async () => {
@@ -149,7 +152,7 @@ const CheckoutScreen = () => {
         ) : (
           <>
             <PaymentScreen>
-              <AppHead title={`Checkout`} />
+              <AppHead title={`Paiement`} icon="cash-outline" />
               <View style={styles.Checkout}>
                 <PaymentButton
                   variant="primary"
@@ -179,7 +182,7 @@ const CheckoutScreen = () => {
                   variant="primary"
                   loading={loading}
                   disabled={!paymentMethod || !paymentSheetEnabled}
-                  title="Pay"
+                  title="Payer"
                   onPress={onPressBuy}
                 />
               </View>
@@ -227,6 +230,23 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     marginLeft: 12,
+  },
+  loadingOrderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  icon: {
+    width: 100,
+    height: 60,
+    marginBottom: 10,
+  },
+
+  paymentSection: {
+    flex: 1,
+    marginTop: 30,
+    alignItems: 'center',
   },
 });
 
