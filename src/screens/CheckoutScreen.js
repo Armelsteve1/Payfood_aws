@@ -64,7 +64,7 @@ const CheckoutScreen = () => {
         merchantCountryCode: 'US',
         style: 'alwaysDark',
         testEnv: true,
-        returnURL: 'your-app-scheme://',
+        returnURL: 'schema',
       });
 
       if (!error) {
