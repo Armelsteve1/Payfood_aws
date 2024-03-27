@@ -11,7 +11,7 @@ import { faCoins } from '@fortawesome/free-solid-svg-icons';
 import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import { faAppleAlt } from '@fortawesome/free-solid-svg-icons';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { Alert } from 'react-native';
+import { Alert, Platform, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function WalletScreen() {
@@ -19,15 +19,37 @@ export default function WalletScreen() {
   const navigation = useNavigation();
 
   const handleRecharge = () => {
-    Alert.prompt('Rechargez vos food coins', 'Veuillez saisir le montant', (amount) => {
-      if (!amount) {
-        Alert.alert('Erreur', 'Veuillez saisir un montant.');
-        return;
-      }
+    if (Platform.OS === 'ios') {
+      Alert.prompt('Rechargez vos food coins', 'Veuillez saisir le montant', (amount) => {
+        if (!amount) {
+          Alert.alert('Erreur', 'Veuillez saisir un montant.');
+          return;
+        }
   
+        Alert.alert(
+          'Félicitations !',
+          `Vous n'êtez pas si loin ! Vous pouvez dans pas longtemps payer avec vos ${amount} coins. Procéder au paiement?`,
+          [
+            {
+              text: 'Annuler',
+              style: 'cancel',
+            },
+            {
+              text: 'Payer',
+              onPress: () => {
+                console.log("Montant de recharge :", amount);
+                setRechargeAmount(amount);
+                navigation.navigate('CheckoutScreen');
+              },
+            },
+          ],
+        );
+      });
+    } else if (Platform.OS === 'android') {
+      let textInput = '';
       Alert.alert(
-        'Félicitations !',
-        `Vous n'êtez pas si loin ! Vous pouvez dans pas longtemps payer avec vos ${amount} coins. Procéder au paiement?`,
+        'Rechargez vos food coins',
+        'Veuillez saisir le montant',
         [
           {
             text: 'Annuler',
@@ -36,15 +58,43 @@ export default function WalletScreen() {
           {
             text: 'Payer',
             onPress: () => {
+              if (!textInput || isNaN(Number(textInput))) {
+                Alert.alert('Erreur', 'Veuillez saisir un montant valide.');
+                return;
+              }
+              const amount = Number(textInput);
               console.log("Montant de recharge :", amount);
               setRechargeAmount(amount);
               navigation.navigate('CheckoutScreen');
             },
           },
         ],
+        { 
+          onDismiss: () => {
+            if (!textInput || isNaN(Number(textInput))) {
+              Alert.alert('Erreur', 'Veuillez saisir un montant valide.');
+              return;
+            }
+            const amount = Number(textInput);
+            console.log("Montant de recharge :", amount);
+            setRechargeAmount(amount);
+            navigation.navigate('CheckoutScreen');
+          },
+          cancelable: true,
+          cancelText: 'Annuler',
+          keyboardType: 'numeric',
+          content: (
+            <TextInput
+              onChangeText={(value) => (textInput = value)}
+              keyboardType="numeric"
+              autoFocus
+            />
+          ),
+        }
       );
-    });
+    }
   };
+  
   
 
   return (
