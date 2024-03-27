@@ -11,7 +11,7 @@ import { faCoins } from '@fortawesome/free-solid-svg-icons';
 import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import { faAppleAlt } from '@fortawesome/free-solid-svg-icons';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { Alert, Platform, TextInput } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function WalletScreen() {
