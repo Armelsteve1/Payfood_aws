@@ -183,7 +183,7 @@ export default function WalletScreen() {
             onPress={() => {
               Alert.alert(
                 'Apple Pay',
-                'You can pay with Apple Pay.',
+                'Vous pouvez désormais payer avec Apple pay.',
                 [{ text: 'Je comprends.', onPress: () => console.log('OK Pressed') }],
                 { cancelable: false }
               );
