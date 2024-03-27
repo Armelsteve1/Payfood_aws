@@ -19,7 +19,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon1.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.armel1.payfood"

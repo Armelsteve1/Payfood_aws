@@ -4,11 +4,11 @@ import QRCode from 'react-native-qrcode-svg';
 import AppHead from '../component/AppHead';
 import Screen from '../component/Screen';
 import tailwind from 'tailwind-react-native-classnames';
-
+import { useNavigation } from '@react-navigation/native';
 const QRCodeGenerator = () => {
   const [menuUrl, setMenuUrl] = useState('https://qxqiytxy36.execute-api.eu-north-1.amazonaws.com/items/rest01/menu01');
   const [qrCodeValue, setQRCodeValue] = useState('');
-
+  const navigation = useNavigation();
   const generateQRCode = () => {
     if (menuUrl.trim() !== '') {
       const newMenuUrl = `https://qxqiytxy36.execute-api.eu-north-1.amazonaws.com/items/rest01/menu01`;
@@ -16,15 +16,15 @@ const QRCodeGenerator = () => {
       setQRCodeValue(newMenuUrl);
     }
   };
+  const handelRestaurant=()=>{
+    navigation.navigate('Commande');
+  }
   return (
     <Screen style={tailwind`flex-1 bg-white`}>
       <View style={styles.container}>
         <AppHead title={`Qr code`} icon="qr-code-outline" />
         <View style={styles.content}>
           <Text style={styles.title}>Générateur de QR Code pour le Menu</Text>
-          <TouchableOpacity style={styles.button} onPress={generateQRCode}>
-            <Text style={styles.buttonText}>Générer le QR Code</Text>
-          </TouchableOpacity>
           {qrCodeValue !== '' && (
             <View style={styles.qrCodeContainer}>
               <QRCode
@@ -36,6 +36,12 @@ const QRCodeGenerator = () => {
               <Text style={styles.qrCodeText}>Scannez ce QR Code pour accéder à votre menu</Text>
             </View>
           )}
+           <TouchableOpacity style={styles.button} onPress={generateQRCode}>
+            <Text style={styles.buttonText}>Générer le QR Code</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button1} onPress={handelRestaurant}>
+            <Text style={styles.buttonText}>Gestion des commandes</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </Screen>
@@ -65,6 +71,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF3C6E',
     padding: 10,
     borderRadius: 5,
+    width: '100%',
+    alignItems: 'center',
+  },
+  button1: {
+    backgroundColor: '#FF3C6E',
+    padding: 10,
+    borderRadius: 5,
+    marginTop:5,
     width: '100%',
     alignItems: 'center',
   },
