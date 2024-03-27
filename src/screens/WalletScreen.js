@@ -45,7 +45,7 @@ export default function WalletScreen() {
           ],
         );
       });
-    } else if (Platform.OS === 'android') {
+    } else { // for platforms other than iOS
       let textInput = '';
       Alert.alert(
         'Rechargez vos food coins',
