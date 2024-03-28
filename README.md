@@ -12,10 +12,10 @@ Payfood est une application mobile développée en React Native, conçue pour fa
 
 ## Technologies utilisées
 
-- **React Native**:
+- **React Native**
 - **AWS Lambda**: 
 - **Amazon DynamoDB**
-- **Amazon API Gateway**:
+- **Amazon API Gateway**
 - **AWS Amplify**
 
 
