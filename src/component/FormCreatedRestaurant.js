@@ -4,7 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 const CreatedRestaurant = () => {
     const [restaurantData, setRestaurantData] = useState({
-        id: generateId(), // Générer automatiquement l'ID du restaurant
+        id: generateId(),
         categories: [],
         coordinates: { latitude: '', longitude: '' },
         image_url: '',
