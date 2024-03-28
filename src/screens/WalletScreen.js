@@ -45,7 +45,7 @@ export default function WalletScreen() {
           ],
         );
       });
-    } else { // for platforms other than iOS
+    } else {
       let textInput = '';
       Alert.alert(
         'Rechargez vos food coins',
@@ -70,16 +70,6 @@ export default function WalletScreen() {
           },
         ],
         { 
-          onDismiss: () => {
-            if (!textInput || isNaN(Number(textInput))) {
-              Alert.alert('Erreur', 'Veuillez saisir un montant valide.');
-              return;
-            }
-            const amount = Number(textInput);
-            console.log("Montant de recharge :", amount);
-            setRechargeAmount(amount);
-            navigation.navigate('CheckoutScreen');
-          },
           cancelable: true,
           cancelText: 'Annuler',
           keyboardType: 'numeric',
@@ -94,6 +84,7 @@ export default function WalletScreen() {
       );
     }
   };
+  
   
   
 

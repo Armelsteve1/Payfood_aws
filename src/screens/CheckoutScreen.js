@@ -112,11 +112,6 @@ const CheckoutScreen = () => {
 
   useEffect(() => {
     initialisePaymentSheet();
-    // Mettez à jour l'état local pour les articles du panier ici
-    // Mettez à jour l'état local pour les informations de l'utilisateur ici
-    // ...
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addOrder = async () => {
