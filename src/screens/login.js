@@ -20,7 +20,7 @@ const LoginScreen = () => {
             setLoading(true);
             await signIn(values.email, values.password);
             console.log('✅ Success');
-            navigation.navigate('Main');
+            // navigation.navigate('Main');
         } catch (error) {
             Alert.alert('Erreur de connexion', error.message);
         } finally {
