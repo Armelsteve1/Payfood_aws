@@ -12,6 +12,7 @@ import CommandeScreen from '../screens/CommandeScreen'
 import RestaurateurNavigation from './RestaurateurNavigation';
 import MonRestaurantScreen from '../screens/MyRestaurantScreen'
 import CreatedRestaurant from '../component/FormCreatedRestaurant';
+import CommandeRestaurant from '../screens/CommandeRestaurant';
 const Stack = createStackNavigator();
 
 export default function HomeNavigator() {
@@ -32,6 +33,7 @@ export default function HomeNavigator() {
             <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
             <Stack.Screen name="Preferences" component={AccountSettingsScreen} />
             <Stack.Screen name="Create" component={CreatedRestaurant} />
+            <Stack.Screen name="CommandeRest" component={CommandeRestaurant} />
         </Stack.Navigator>
     )
 }
