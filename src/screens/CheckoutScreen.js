@@ -8,11 +8,8 @@ import PaymentButton from '../component/PaymentButton';
 import tailwind from 'tailwind-react-native-classnames';
 import AppHead from '../component/AppHead';
 import { useNavigation } from '@react-navigation/core';
-import { API, graphqlOperation } from 'aws-amplify';
+import { API, graphqlOperation, Auth } from 'aws-amplify';
 import { addOrder as addOrderMutation } from '../graphql/mutations';
-import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-
 
 const CheckoutScreen = () => {
   const {
@@ -27,6 +24,19 @@ const CheckoutScreen = () => {
   const [allCartItems, setAllCartItems] = useState([]);
   const [user, setUser] = useState(null);
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userData = await Auth.currentAuthenticatedUser();
+        setUser(userData.attributes);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const fetchPaymentSheetParams = async () => {
     const response = await fetch(`${STRIPE_API_URL}/payment-sheet`, {
@@ -101,12 +111,12 @@ const CheckoutScreen = () => {
     setLoading(true);
     const { error } = await confirmPaymentSheetPayment();
 
-    if (error) {
-      Alert.alert('Payment failed', `Error code: ${error.code}`, error.message);
-    } else {
+    // if (error) {
+      // Alert.alert('Payment failed', `Error code: ${error.code}`, error.message);
+    // } else {
       addOrder();
       setPaymentSheetEnabled(false);
-    }
+    // }
     setLoading(false);
   };
 
@@ -114,26 +124,35 @@ const CheckoutScreen = () => {
     initialisePaymentSheet();
   }, []);
 
-  const addOrder = async () => {
-    setLoadingOrder(true);
-    try {
-      await API.graphql(graphqlOperation(addOrderMutation, {
-        input: {
-          items: allCartItems,
-          email: user?.email,
-          timestamp: new Date().toISOString()
-        }
-      }));
-      setTimeout(() => {
-        setLoadingOrder(false);
-        setAllCartItems([]);
-        navigation.navigate("SuccessScreen");
-      }, 1500)
-    } catch (e) {
-      setLoadingOrder(false)
-      Alert.alert('Error', e.message)
-    }
-  }
+const addOrder = async () => {
+
+  navigation.navigate("SuccessScreen");
+
+  setLoadingOrder(true);
+  // try {
+  //   if (!allCartItems || !user?.email) {
+  //     throw new Error('Missing required data for adding order');
+  //   }
+
+  //   await API.graphql(graphqlOperation(addOrderMutation, {
+  //     input: {
+  //       items: allCartItems,
+  //       email: user.email,
+  //       timestamp: new Date().toISOString()
+  //     }
+  //   }));
+    
+  //   setTimeout(() => {
+  //     setLoadingOrder(false);
+  //     setAllCartItems([]);
+  //     navigation.navigate("SuccessScreen");
+  //   }, 1500);
+  // } catch (error) {
+  //   setLoadingOrder(false);
+  //   Alert.alert('Error', error.message || 'Failed to add order');
+  // }
+};
+
 
   return (
     <View style={styles.container}>
@@ -142,7 +161,6 @@ const CheckoutScreen = () => {
           <View>
             <Text style={tailwind`font-bold text-lg w-3/4 text-center`}>{"Congratulations!\nPayment successfully done!"}</Text>
             <Text style={tailwind`mt-4`}>Création de votre commande. Veuillez patienter...</Text>
-            {/* <Image source={require('../assets/images/loaging.gif')} style={tailwind`w-72 h-72`} /> */}
           </View>
         ) : (
           <>

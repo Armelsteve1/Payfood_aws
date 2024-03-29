@@ -18,75 +18,6 @@ export default function WalletScreen() {
   const [rechargeAmount, setRechargeAmount] = useState('0,00');
   const navigation = useNavigation();
 
-  const handleRecharge = () => {
-    if (Platform.OS === 'ios') {
-      Alert.prompt('Rechargez vos food coins', 'Veuillez saisir le montant', (amount) => {
-        if (!amount) {
-          Alert.alert('Erreur', 'Veuillez saisir un montant.');
-          return;
-        }
-  
-        Alert.alert(
-          'Félicitations !',
-          `Vous n'êtez pas si loin ! Vous pouvez dans pas longtemps payer avec vos ${amount} coins. Procéder au paiement?`,
-          [
-            {
-              text: 'Annuler',
-              style: 'cancel',
-            },
-            {
-              text: 'Payer',
-              onPress: () => {
-                console.log("Montant de recharge :", amount);
-                setRechargeAmount(amount);
-                navigation.navigate('CheckoutScreen');
-              },
-            },
-          ],
-        );
-      });
-    } else {
-      let textInput = '';
-      Alert.alert(
-        'Rechargez vos food coins',
-        'Veuillez saisir le montant',
-        [
-          {
-            text: 'Annuler',
-            style: 'cancel',
-          },
-          {
-            text: 'Payer',
-            onPress: () => {
-              if (!textInput || isNaN(Number(textInput))) {
-                Alert.alert('Erreur', 'Veuillez saisir un montant valide.');
-                return;
-              }
-              const amount = Number(textInput);
-              console.log("Montant de recharge :", amount);
-              setRechargeAmount(amount);
-              navigation.navigate('CheckoutScreen');
-            },
-          },
-        ],
-        { 
-          cancelable: true,
-          cancelText: 'Annuler',
-          keyboardType: 'numeric',
-          content: (
-            <TextInput
-              onChangeText={(value) => (textInput = value)}
-              keyboardType="numeric"
-              autoFocus
-            />
-          ),
-        }
-      );
-    }
-  };
-  
-  
-  
 
   return (
     <Screen style={tailwind`flex-1 bg-white`}>
@@ -99,9 +30,6 @@ export default function WalletScreen() {
           </View>
         </Card>
         <View>
-        <TouchableOpacity style={styles.button} onPress={handleRecharge}>
-      <Text style={styles.buttonText}>Rechargez vos Food Coins</Text>
-    </TouchableOpacity>
         </View>
       </View>
       <ScrollView contentContainerStyle={styles.container}>
