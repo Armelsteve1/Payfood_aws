@@ -118,6 +118,7 @@ const CheckoutScreen = ({ route }) => {
     // if (error) {
       // Alert.alert('Payment failed', `Error code: ${error.code}`, error.message);
     // } else {
+      addCoins();
       addOrder();
       setPaymentSheetEnabled(false);
     // }
@@ -127,6 +128,41 @@ const CheckoutScreen = ({ route }) => {
   useEffect(() => {
     initialisePaymentSheet();
   }, []);
+
+  const addCoins = async () => {
+    try {
+      const coinsId = uuidv4().substring(0, 10);
+      const customerEmail = user.email;
+      const currentDate = new Date().toISOString();
+        
+      let orderData = {
+        id: coinsId,
+        amount: total,
+        customer: customerEmail,
+        updatedAt: currentDate
+      };
+  
+      const response = await fetch('https://tdqoe0yq4c.execute-api.eu-north-1.amazonaws.com/coins', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        
+        body: JSON.stringify(orderData),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to add coins');
+      }
+  
+      console.log('Coins added successfully');
+    } catch (error) {
+      console.error('Error adding coins:', error);
+      console.error('Response status:', response.status);
+      console.error('Response body:', await response.text());
+    }
+  };
+  
 
   const addOrder = async () => {
     setLoadingOrder(true);
