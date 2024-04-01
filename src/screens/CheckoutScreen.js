@@ -10,6 +10,7 @@ import AppHead from '../component/AppHead';
 import { useNavigation } from '@react-navigation/core';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import { CartContext } from '../hooks/cartContext';
+import { v4 as uuidv4 } from 'uuid';
 
 const CheckoutScreen = ({ route }) => {
   const {
@@ -72,9 +73,9 @@ const CheckoutScreen = ({ route }) => {
         customerEphemeralKeySecret: ephemeralKey,
         paymentIntentClientSecret: paymentIntent,
         customFlow: true,
-        merchantDisplayName: 'Example Inc.',
+        merchantDisplayName: 'Payfood Inc.',
         applePay: false,
-        merchantCountryCode: 'US',
+        merchantCountryCode: 'FR',
         style: 'alwaysDark',
         testEnv: true,
         returnURL: 'schema',
@@ -133,12 +134,18 @@ const CheckoutScreen = ({ route }) => {
     try {
       const currentDate = new Date().toISOString();
       const foodIds = cartItems.flatMap(item => item.foods.map(food => food.id));
-      console.log(foodIds);
-      const orderData = {
-        id: '5',
+      
+      const orderId = uuidv4().substring(0, 10);
+      
+      const foodIdsList = foodIds.map(id => ({ id }));
+  
+      let orderData = {
+        id: orderId,
         price: total,
-        foodIds: foodIds,
-        date: currentDate
+        foodIds: foodIdsList, 
+        date: currentDate,
+        paymentCard: paymentMethod ? paymentMethod.label : null,
+        paymentCardTypeImage: paymentMethod ? paymentMethod.image : null,
       };
   
       const response = await fetch('https://cwi4gwogwe.execute-api.eu-north-1.amazonaws.com/orders', {
@@ -146,6 +153,7 @@ const CheckoutScreen = ({ route }) => {
         headers: {
           'Content-Type': 'application/json',
         },
+        
         body: JSON.stringify(orderData),
       });
   
@@ -162,7 +170,7 @@ const CheckoutScreen = ({ route }) => {
       setLoadingOrder(false);
     }
   };
-  
+    
   return (
     <View style={styles.container}>
       <>
