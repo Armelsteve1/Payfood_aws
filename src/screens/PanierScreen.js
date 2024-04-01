@@ -19,7 +19,7 @@ const CartScreen = ({ route }) => {
     const addOrder = () => {
         setModalVisible(false);
         totalPrice = total;
-        navigation.navigate("CheckoutScreen");
+        navigation.navigate("CheckoutScreen", { total: total });
     };
 
     return (

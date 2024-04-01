@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Alert, Image, StyleSheet, Text, View } from 'react-native';
 import { useStripe } from '@stripe/stripe-react-native';
 import PaymentScreen from '../component/PaymentScreen';
@@ -9,8 +9,9 @@ import tailwind from 'tailwind-react-native-classnames';
 import AppHead from '../component/AppHead';
 import { useNavigation } from '@react-navigation/core';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
+import { CartContext } from '../hooks/cartContext';
 
-const CheckoutScreen = () => {
+const CheckoutScreen = ({ route }) => {
   const {
     initPaymentSheet,
     presentPaymentSheet,
@@ -23,6 +24,9 @@ const CheckoutScreen = () => {
   const [allCartItems, setAllCartItems] = useState([]);
   const [user, setUser] = useState(null);
   const navigation = useNavigation();
+
+  const { total = 0 } = route.params || {};
+  const { cartItems, setCartItems } = useContext(CartContext);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -127,16 +131,22 @@ const CheckoutScreen = () => {
     setLoadingOrder(true);
   
     try {
+      const currentDate = new Date().toISOString();
+      const foodIds = cartItems.flatMap(item => item.foods.map(food => food.id));
+      console.log(foodIds);
+      const orderData = {
+        id: '5',
+        price: total,
+        foodIds: foodIds,
+        date: currentDate
+      };
+  
       const response = await fetch('https://cwi4gwogwe.execute-api.eu-north-1.amazonaws.com/orders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          id: '3',
-          price: '120',
-          name: 'frites',
-        }),
+        body: JSON.stringify(orderData),
       });
   
       if (!response.ok) {
@@ -153,8 +163,6 @@ const CheckoutScreen = () => {
     }
   };
   
-
-
   return (
     <View style={styles.container}>
       <>
