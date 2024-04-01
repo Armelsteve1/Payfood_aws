@@ -5,6 +5,7 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import colors from '../component/configs/colors';
 import { CartContext } from '../hooks/cartContext';
 const CartItems = () => {
+    
     const { cartItems, setCartItems } = useContext(CartContext);
     console.log(cartItems, 'cartItems');
     const match = (id, resName) => {
@@ -17,13 +18,20 @@ const CartItems = () => {
                 const updatedFoods = item.foods.filter(food => food.id !== id);
                 if (updatedFoods.length > 0) {
                     return { ...item, foods: updatedFoods };
+                } else {
+                    return null; // Return null if no items left
                 }
             }
             return item;
-        });
-        setCartItems(updatedCartItems);
-    }
-
+        }).filter(Boolean); 
+    
+        if (updatedCartItems.length === 0) {
+            setCartItems([]); // Set cartItems to an empty array if no items left
+        } else {
+            setCartItems(updatedCartItems);
+        }
+    };
+       
     return (
         <ScrollView style={tailwind`mx-4 mt-3`} showsVerticalScrollIndicator={false}>
             {!cartItems.length && <Text style={tailwind`text-center text-black`}>Pas d'articles dans le panier !</Text>}

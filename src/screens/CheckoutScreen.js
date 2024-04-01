@@ -26,7 +26,7 @@ const CheckoutScreen = ({ route }) => {
   const [user, setUser] = useState(null);
   const navigation = useNavigation();
 
-  const { total = 0 } = route.params || {};
+  const { total = 0, count = 0 } = route.params || {};
   const { cartItems, setCartItems } = useContext(CartContext);
 
   useEffect(() => {
@@ -134,7 +134,7 @@ const CheckoutScreen = ({ route }) => {
     try {
       const currentDate = new Date().toISOString();
       const foodIds = cartItems.flatMap(item => item.foods.map(food => food.id));
-      
+
       const orderId = uuidv4().substring(0, 10);
       
       const foodIdsList = foodIds.map(id => ({ id }));
@@ -161,6 +161,7 @@ const CheckoutScreen = ({ route }) => {
         throw new Error('Failed to add order');
       }
   
+      setCartItems([]);
       navigation.navigate("SuccessScreen");
     } catch (error) {
       console.error('Error adding order:', error);

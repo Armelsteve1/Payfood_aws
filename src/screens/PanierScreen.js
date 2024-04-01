@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, StyleSheet, Text, Modal } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import Screen from '../component/Screen';
@@ -7,20 +7,29 @@ import AppHead from '../component/AppHead';
 import AppButton from '../component/AppButton';
 import colors from '../component/configs/colors';
 import CartItems from '../component/CartItems';
+import { CartContext } from '../hooks/cartContext';
 import { useNavigation } from '@react-navigation/core';
 
 
 const CartScreen = ({ route }) => {
     const { total = 0, count = 0 } = route.params || {};
     const [modalVisible, setModalVisible] = useState(false);
+    const [cartTotal, setCartTotal] = useState(total);
+    const { cartItems, setCartItems } = useContext(CartContext);
 
     const navigation = useNavigation();
 
     const addOrder = () => {
         setModalVisible(false);
-        totalPrice = total;
-        navigation.navigate("CheckoutScreen", { total: total });
+        navigation.navigate("CheckoutScreen", { total: cartTotal, count: count });
     };
+
+    useEffect(() => {
+        const newTotal = cartItems.reduce((acc, item) => {
+            return acc + item.foods.reduce((foodAcc, food) => foodAcc + (food.price || 0), 0);
+        }, 0);
+        setCartTotal(newTotal);
+    }, [cartItems]);
 
     return (
         <Screen style={tailwind`flex-1 bg-white`}>
@@ -32,7 +41,7 @@ const CartScreen = ({ route }) => {
                 <View style={tailwind`flex-row justify-between items-center px-5 pb-5`}>
                     <View style={styles.totalContainer}>
                         <Text style={styles.total}>Total</Text>
-                        <Text style={styles.totalAmount}>{total}€</Text>
+                        <Text style={styles.totalAmount}>{cartTotal}€</Text>
                     </View>
                     <View style={styles.buttonContainer}>
                         <AppButton title="Payer" onPress={addOrder} color="black" />
@@ -42,6 +51,7 @@ const CartScreen = ({ route }) => {
         </Screen>
     );
 }
+
 
 const styles = StyleSheet.create({
     totalContainer: {
