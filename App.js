@@ -4,6 +4,7 @@ import { Amplify } from 'aws-amplify';
 import config from './src/aws-exports';
 Amplify.configure(config)
 import { CartProvider } from './src/hooks/cartContext';
+import 'react-native-get-random-values';
 
 
 export default function App() {
