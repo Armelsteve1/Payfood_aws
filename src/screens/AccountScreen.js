@@ -40,7 +40,7 @@ const AccountScreen = () => {
   };
 
     const handleRestaurant = async () => {
-        navigation.navigate('QrCode');
+        navigation.navigate('HomeRest');
     };
 
     const handleResetPassword = async () => {

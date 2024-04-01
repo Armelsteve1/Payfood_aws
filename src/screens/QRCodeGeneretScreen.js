@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Share } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
+import { Ionicons } from '@expo/vector-icons';
 import AppHead from '../component/AppHead';
 import Screen from '../component/Screen';
 import tailwind from 'tailwind-react-native-classnames';
-import { useNavigation } from '@react-navigation/native';
+
 const QRCodeGenerator = () => {
   const [menuUrl, setMenuUrl] = useState('https://qxqiytxy36.execute-api.eu-north-1.amazonaws.com/items/rest01/menu01');
   const [qrCodeValue, setQRCodeValue] = useState('');
-  const navigation = useNavigation();
+
   const generateQRCode = () => {
     if (menuUrl.trim() !== '') {
       const newMenuUrl = `https://qxqiytxy36.execute-api.eu-north-1.amazonaws.com/items/rest01/menu01`;
@@ -16,15 +17,33 @@ const QRCodeGenerator = () => {
       setQRCodeValue(newMenuUrl);
     }
   };
-  const handelRestaurant=()=>{
-    navigation.navigate('Commande');
-  }
+
+  const handleShareQRCode = async () => {
+    try {
+      const result = await Share.share({
+        message: qrCodeValue,
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          console.log('QR code partagé avec succès');
+        } else {
+          console.log('Partage annulé');
+        }
+      } else if (result.action === Share.dismissedAction) {
+        console.log('Partage fermé');
+      }
+    } catch (error) {
+      console.error('Erreur de partage :', error.message);
+    }
+  };
   return (
     <Screen style={tailwind`flex-1 bg-white`}>
       <View style={styles.container}>
         <AppHead title={`Qr code`} icon="qr-code-outline" />
         <View style={styles.content}>
-          <Text style={styles.title}>Générateur de QR Code pour le Menu</Text>
+          <TouchableOpacity style={styles.button} onPress={generateQRCode}>
+            <Text style={styles.buttonText}>Générer Mon QR Code</Text>
+          </TouchableOpacity>
           {qrCodeValue !== '' && (
             <View style={styles.qrCodeContainer}>
               <QRCode
@@ -34,14 +53,11 @@ const QRCodeGenerator = () => {
                 backgroundColor="white"
               />
               <Text style={styles.qrCodeText}>Scannez ce QR Code pour accéder à votre menu</Text>
+              <TouchableOpacity style={styles.shareButton} onPress={handleShareQRCode}>
+                <Ionicons name="share-social-outline" size={24} color="white" />
+              </TouchableOpacity>
             </View>
           )}
-           <TouchableOpacity style={styles.button} onPress={generateQRCode}>
-            <Text style={styles.buttonText}>Générer le QR Code</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button1} onPress={handelRestaurant}>
-            <Text style={styles.buttonText}>Gestion des commandes</Text>
-          </TouchableOpacity>
         </View>
       </View>
     </Screen>
@@ -59,9 +75,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 22,
   },
-  content1: {
-    marginTop: 10,
-  },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
@@ -71,14 +84,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF3C6E',
     padding: 10,
     borderRadius: 5,
-    width: '100%',
-    alignItems: 'center',
-  },
-  button1: {
-    backgroundColor: '#FF3C6E',
-    padding: 10,
-    borderRadius: 5,
-    marginTop:5,
     width: '100%',
     alignItems: 'center',
   },
@@ -92,6 +97,13 @@ const styles = StyleSheet.create({
   },
   qrCodeText: {
     marginTop: 10,
+  },
+  shareButton: {
+    backgroundColor: '#FF3C6E',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+    alignItems: 'center',
   },
 });
 
