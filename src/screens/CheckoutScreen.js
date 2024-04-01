@@ -9,7 +9,6 @@ import tailwind from 'tailwind-react-native-classnames';
 import AppHead from '../component/AppHead';
 import { useNavigation } from '@react-navigation/core';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
-import { addOrder as addOrderMutation } from '../graphql/mutations';
 
 const CheckoutScreen = () => {
   const {
@@ -124,34 +123,36 @@ const CheckoutScreen = () => {
     initialisePaymentSheet();
   }, []);
 
-const addOrder = async () => {
-
-  navigation.navigate("SuccessScreen");
-
-  setLoadingOrder(true);
-  // try {
-  //   if (!allCartItems || !user?.email) {
-  //     throw new Error('Missing required data for adding order');
-  //   }
-
-  //   await API.graphql(graphqlOperation(addOrderMutation, {
-  //     input: {
-  //       items: allCartItems,
-  //       email: user.email,
-  //       timestamp: new Date().toISOString()
-  //     }
-  //   }));
-    
-  //   setTimeout(() => {
-  //     setLoadingOrder(false);
-  //     setAllCartItems([]);
-  //     navigation.navigate("SuccessScreen");
-  //   }, 1500);
-  // } catch (error) {
-  //   setLoadingOrder(false);
-  //   Alert.alert('Error', error.message || 'Failed to add order');
-  // }
-};
+  const addOrder = async () => {
+    setLoadingOrder(true);
+  
+    try {
+      const response = await fetch('https://cwi4gwogwe.execute-api.eu-north-1.amazonaws.com/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: '3',
+          price: '120',
+          name: 'frites',
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to add order');
+      }
+  
+      navigation.navigate("SuccessScreen");
+    } catch (error) {
+      console.error('Error adding order:', error);
+      console.error('Response status:', response.status);
+      console.error('Response body:', await response.text());
+    } finally {
+      setLoadingOrder(false);
+    }
+  };
+  
 
 
   return (
@@ -159,7 +160,6 @@ const addOrder = async () => {
       <>
         {loadingOrder ? (
           <View>
-            <Text style={tailwind`font-bold text-lg w-3/4 text-center`}>{"Congratulations!\nPayment successfully done!"}</Text>
             <Text style={tailwind`mt-4`}>Création de votre commande. Veuillez patienter...</Text>
           </View>
         ) : (

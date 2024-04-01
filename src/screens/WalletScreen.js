@@ -210,10 +210,5 @@ const styles = {
     textAlign: 'left',
   },
   couponContainer: {
-    // marginVertical: 10,
-    // paddingHorizontal: 15,
-    // paddingVertical: 10,
-    // borderWidth: 2,
-    // borderColor: '#E71C6B',
   },
 };
