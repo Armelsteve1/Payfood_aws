@@ -131,37 +131,74 @@ const CheckoutScreen = ({ route }) => {
 
   const addCoins = async () => {
     try {
-      const coinsId = uuidv4().substring(0, 10);
       const customerEmail = user.email;
       const currentDate = new Date().toISOString();
-        
-      let orderData = {
-        id: coinsId,
-        amount: total,
-        customer: customerEmail,
-        updatedAt: currentDate
-      };
   
-      const response = await fetch('https://tdqoe0yq4c.execute-api.eu-north-1.amazonaws.com/coins', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        
-        body: JSON.stringify(orderData),
-      });
+      const existingCoinsResponse = await fetch(`https://tdqoe0yq4c.execute-api.eu-north-1.amazonaws.com/coins/${user.email}`);
+      const existingCoinsData = await existingCoinsResponse.json();
+
+      console.log('Existing coins data:', existingCoinsData);
+
   
-      if (!response.ok) {
-        throw new Error('Failed to add coins');
+      if (existingCoinsData.length > 0) {
+        const existingCoinId = existingCoinsData[0].id;
+        console.log(existingCoinId);
+  
+        let updatedCoinData = {
+          id: existingCoinId,
+          amount: total + existingCoinsData[0].amount,
+          customer: customerEmail,
+          updatedAt: currentDate
+        };
+
+        console.log('Updated coin data:', updatedCoinData);
+
+        const updateResponse = await fetch(`https://tdqoe0yq4c.execute-api.eu-north-1.amazonaws.com/coins/${existingCoinId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedCoinData),
+        });
+  
+        if (!updateResponse.ok) {
+          throw new Error('Failed to update coins');
+        }
+  
+        console.log('Coins updated successfully');
+      } else {
+        const coinsId = uuidv4().substring(0, 10);
+    
+        let orderData = {
+          id: coinsId,
+          amount: total,
+          customer: customerEmail,
+          updatedAt: currentDate
+        };
+
+        console.log('New coins data:', orderData);
+
+    
+        const response = await fetch('https://tdqoe0yq4c.execute-api.eu-north-1.amazonaws.com/coins', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          
+          body: JSON.stringify(orderData),
+        });
+    
+        if (!response.ok) {
+          throw new Error('Failed to add coins');
+        }
+    
+        console.log('Coins added successfully');
       }
-  
-      console.log('Coins added successfully');
     } catch (error) {
       console.error('Error adding coins:', error);
-      console.error('Response status:', response.status);
-      console.error('Response body:', await response.text());
     }
   };
+  
   
 
   const addOrder = async () => {
