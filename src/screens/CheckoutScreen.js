@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Alert, Image, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, StyleSheet, Text, View , ActivityIndicator} from 'react-native';
 import { useStripe } from '@stripe/stripe-react-native';
 import PaymentScreen from '../component/PaymentScreen';
 import { STRIPE_API_URL } from '../component/configs/apiEndpoints';
@@ -130,11 +130,11 @@ const CheckoutScreen = ({ route }) => {
 
   const addOrder = async () => {
     setLoadingOrder(true);
-  
+    
     try {
       const currentDate = new Date().toISOString();
       const foodIds = cartItems.flatMap(item => item.foods.map(food => food.id));
-
+  
       const orderId = uuidv4().substring(0, 10);
       
       const foodIdsList = foodIds.map(id => ({ id }));
@@ -162,22 +162,28 @@ const CheckoutScreen = ({ route }) => {
       }
   
       setCartItems([]);
-      navigation.navigate("SuccessScreen");
+      setTimeout(() => {
+        setLoadingOrder(false);
+        navigation.navigate("SuccessScreen");
+      }, 6000);
     } catch (error) {
       console.error('Error adding order:', error);
       console.error('Response status:', response.status);
       console.error('Response body:', await response.text());
-    } finally {
       setLoadingOrder(false);
     }
   };
+  
     
   return (
     <View style={styles.container}>
       <>
         {loadingOrder ? (
-          <View>
-            <Text style={tailwind`mt-4`}>Création de votre commande. Veuillez patienter...</Text>
+          <View style={tailwind`flex justify-center items-center h-full`}>
+            <View style={tailwind`border border-gray-300 p-4`}>
+              <ActivityIndicator color={colors.primary} size="big" />
+              <Text style={tailwind`mt-4`}>Validation de votre commande. Veuillez patienter...</Text>
+            </View>
           </View>
         ) : (
           <>

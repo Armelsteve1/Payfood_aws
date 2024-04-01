@@ -8,14 +8,14 @@ import tailwind from 'tailwind-react-native-classnames';
 import { Ionicons } from '@expo/vector-icons'
 
 function SuccessScreen() {
-    const navigation = useNavigation()
 
     return (
         <Screen style={styles.container}>
+            <Image style={styles.logo} source={require('../assets/logo.png')} />
             <View style={styles.content}>
-                <Ionicons name="checkmark-circle" size={70} color="green" />
-                <Text style={styles.title}>Félicitations</Text>
-                <Text style={styles.text}>Votre commande est bien prise en compte.</Text>
+                <Ionicons name="checkmark-circle" size={60} color="green" />
+                <Text style={styles.title}>Succès</Text>
+                <Text style={styles.text}>Votre commande a bien été prise en compte.</Text>
                 <View style={styles.buttons}>
                     <AppButton onPress={() => navigation.navigate('Accueil')} title="Aller à l'accueil" color="black" />
                 </View>
@@ -40,15 +40,19 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     text: {
-        width: 280, 
+        width: 400, 
         textAlign: 'center',
         marginTop: 10,
         color: colors.gray
     },
     buttons: {
         width: '70%',
-        marginTop: 20
-    }
+        marginTop: 10,
+    },
+    logo: {
+        top: -240,
+        alignSelf: 'center',
+    },
 })
 
 export default SuccessScreen
