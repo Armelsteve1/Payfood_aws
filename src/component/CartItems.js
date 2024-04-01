@@ -1,27 +1,20 @@
-import React, {useContext } from 'react';
+import React, { useContext } from 'react';
 import { View, StyleSheet, Text, Image, ScrollView } from 'react-native';
 import tailwind from 'tailwind-react-native-classnames';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import colors from '../component/configs/colors';
 import { CartContext } from '../hooks/cartContext';
-const CartItems = () => {
+
+const CartItems = ({ handleRemove, updateCount }) => {
     const { cartItems, setCartItems } = useContext(CartContext);
-    console.log(cartItems, 'cartItems');
+
     const match = (id, resName) => {
         return cartItems.some(item => item.resName === resName && item.foods.some(food => food.id === id));
     }
 
-    const handleRemove = (id, resName, resImage) => {
-        const updatedCartItems = cartItems.map(item => {
-            if (item.resName === resName) {
-                const updatedFoods = item.foods.filter(food => food.id !== id);
-                if (updatedFoods.length > 0) {
-                    return { ...item, foods: updatedFoods };
-                }
-            }
-            return item;
-        });
-        setCartItems(updatedCartItems);
+    const removeFromCartAndUpdateCount = (id, resName, resImage) => {
+        handleRemove(id, resName, resImage);
+        updateCount();
     }
 
     return (
@@ -40,7 +33,7 @@ const CartItems = () => {
                                 <BouncyCheckbox
                                     fillColor={colors.black}
                                     isChecked={match(food.id, item.resName)}
-                                    onPress={() => handleRemove(food.id, item.resName, item.resImage)}
+                                    onPress={() => removeFromCartAndUpdateCount(food.id, item.resName, item.resImage)}
                                 />
                                 <View style={tailwind`flex-1 pl-2`}>
                                     <Text style={[tailwind`text-gray-900 font-bold mb-1`, { fontSize: 16 }]}>{food.title}</Text>
@@ -58,7 +51,5 @@ const CartItems = () => {
         </ScrollView>
     );
 }
-
-const styles = StyleSheet.create({})
 
 export default CartItems;

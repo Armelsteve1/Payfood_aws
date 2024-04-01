@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, Image, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState, useContext } from 'react';
+import { Alert, Image, StyleSheet, Text, View , ActivityIndicator} from 'react-native';
 import { useStripe } from '@stripe/stripe-react-native';
 import PaymentScreen from '../component/PaymentScreen';
 import { STRIPE_API_URL } from '../component/configs/apiEndpoints';
@@ -8,13 +8,11 @@ import PaymentButton from '../component/PaymentButton';
 import tailwind from 'tailwind-react-native-classnames';
 import AppHead from '../component/AppHead';
 import { useNavigation } from '@react-navigation/core';
-import { API, graphqlOperation } from 'aws-amplify';
-import { addOrder as addOrderMutation } from '../graphql/mutations';
-import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { API, graphqlOperation, Auth } from 'aws-amplify';
+import { CartContext } from '../hooks/cartContext';
+import { v4 as uuidv4 } from 'uuid';
 
-
-const CheckoutScreen = () => {
+const CheckoutScreen = ({ route }) => {
   const {
     initPaymentSheet,
     presentPaymentSheet,
@@ -27,6 +25,22 @@ const CheckoutScreen = () => {
   const [allCartItems, setAllCartItems] = useState([]);
   const [user, setUser] = useState(null);
   const navigation = useNavigation();
+
+  const { total = 0, count = 0 } = route.params || {};
+  const { cartItems, setCartItems } = useContext(CartContext);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userData = await Auth.currentAuthenticatedUser();
+        setUser(userData.attributes);
+      } catch (error) {
+        console.error('Error fetching user:', error);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const fetchPaymentSheetParams = async () => {
     const response = await fetch(`${STRIPE_API_URL}/payment-sheet`, {
@@ -59,9 +73,9 @@ const CheckoutScreen = () => {
         customerEphemeralKeySecret: ephemeralKey,
         paymentIntentClientSecret: paymentIntent,
         customFlow: true,
-        merchantDisplayName: 'Example Inc.',
+        merchantDisplayName: 'Payfood Inc.',
         applePay: false,
-        merchantCountryCode: 'US',
+        merchantCountryCode: 'FR',
         style: 'alwaysDark',
         testEnv: true,
         returnURL: 'schema',
@@ -101,12 +115,13 @@ const CheckoutScreen = () => {
     setLoading(true);
     const { error } = await confirmPaymentSheetPayment();
 
-    if (error) {
-      Alert.alert('Payment failed', `Error code: ${error.code}`, error.message);
-    } else {
+    // if (error) {
+      // Alert.alert('Payment failed', `Error code: ${error.code}`, error.message);
+    // } else {
+      addCoins();
       addOrder();
       setPaymentSheetEnabled(false);
-    }
+    // }
     setLoading(false);
   };
 
@@ -114,35 +129,136 @@ const CheckoutScreen = () => {
     initialisePaymentSheet();
   }, []);
 
+  const addCoins = async () => {
+    try {
+      const customerEmail = user.email;
+      const currentDate = new Date().toISOString();
+  
+      const existingCoinsResponse = await fetch(`https://tdqoe0yq4c.execute-api.eu-north-1.amazonaws.com/coins/${user.email}`);
+      const existingCoinsData = await existingCoinsResponse.json();
+
+      console.log('Existing coins data:', existingCoinsData);
+
+  
+      if (existingCoinsData.length > 0) {
+        const existingCoinId = existingCoinsData[0].id;
+        console.log(existingCoinId);
+  
+        let updatedCoinData = {
+          id: existingCoinId,
+          amount: total + existingCoinsData[0].amount,
+          customer: customerEmail,
+          updatedAt: currentDate
+        };
+
+        console.log('Updated coin data:', updatedCoinData);
+
+        const updateResponse = await fetch(`https://tdqoe0yq4c.execute-api.eu-north-1.amazonaws.com/coins/${existingCoinId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedCoinData),
+        });
+  
+        if (!updateResponse.ok) {
+          throw new Error('Failed to update coins');
+        }
+  
+        console.log('Coins updated successfully');
+      } else {
+        const coinsId = uuidv4().substring(0, 10);
+    
+        let orderData = {
+          id: coinsId,
+          amount: total,
+          customer: customerEmail,
+          updatedAt: currentDate
+        };
+
+        console.log('New coins data:', orderData);
+
+    
+        const response = await fetch('https://tdqoe0yq4c.execute-api.eu-north-1.amazonaws.com/coins', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          
+          body: JSON.stringify(orderData),
+        });
+    
+        if (!response.ok) {
+          throw new Error('Failed to add coins');
+        }
+    
+        console.log('Coins added successfully');
+      }
+    } catch (error) {
+      console.error('Error adding coins:', error);
+    }
+  };
+  
+  
+
   const addOrder = async () => {
     setLoadingOrder(true);
+    
     try {
-      await API.graphql(graphqlOperation(addOrderMutation, {
-        input: {
-          items: allCartItems,
-          email: user?.email,
-          timestamp: new Date().toISOString()
-        }
-      }));
+      const currentDate = new Date().toISOString();
+      const foodIds = cartItems.flatMap(item => item.foods.map(food => food.id));
+  
+      const orderId = uuidv4().substring(0, 10);
+      const customerEmail = user.email;
+      
+      const foodIdsList = foodIds.map(id => ({ id }));
+  
+      let orderData = {
+        id: orderId,
+        price: total,
+        foodIds: foodIdsList, 
+        date: currentDate,
+        paymentCard: paymentMethod ? paymentMethod.label : null,
+        paymentCardTypeImage: paymentMethod ? paymentMethod.image : null,
+        customer: customerEmail
+      };
+  
+      const response = await fetch('https://cwi4gwogwe.execute-api.eu-north-1.amazonaws.com/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        
+        body: JSON.stringify(orderData),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to add order');
+      }
+  
+      setCartItems([]);
       setTimeout(() => {
         setLoadingOrder(false);
-        setAllCartItems([]);
         navigation.navigate("SuccessScreen");
-      }, 1500)
-    } catch (e) {
-      setLoadingOrder(false)
-      Alert.alert('Error', e.message)
+      }, 6000);
+    } catch (error) {
+      console.error('Error adding order:', error);
+      console.error('Response status:', response.status);
+      console.error('Response body:', await response.text());
+      setLoadingOrder(false);
     }
-  }
-
+  };
+  
+    
   return (
     <View style={styles.container}>
       <>
         {loadingOrder ? (
-          <View>
-            <Text style={tailwind`font-bold text-lg w-3/4 text-center`}>{"Congratulations!\nPayment successfully done!"}</Text>
-            <Text style={tailwind`mt-4`}>Création de votre commande. Veuillez patienter...</Text>
-            {/* <Image source={require('../assets/images/loaging.gif')} style={tailwind`w-72 h-72`} /> */}
+          <View style={tailwind`flex justify-center items-center h-full`}>
+            <View style={tailwind`border border-gray-300 p-4`}>
+              <ActivityIndicator color={colors.primary} size="big" />
+              <Text style={tailwind`mt-4`}>Validation de votre commande. Veuillez patienter...</Text>
+            </View>
           </View>
         ) : (
           <>

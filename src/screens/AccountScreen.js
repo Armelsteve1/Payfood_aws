@@ -120,7 +120,7 @@ const AccountScreen = () => {
                 <Text style={{ ...tailwind`text-gray-900 mt-2`, color: colors.gray }}>Réinitialiser mon mot de passe</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={handleSignOut}>
-                <Text style={{ ...tailwind`text-gray-900 mt-2`, color: colors.gray }}>Se déconnecter</Text>
+                <Text style={{ ...tailwind`text-gray-900 mt-2`, color: colors.gray }} onPress={handleSignOut}>Se déconnecter</Text>
             </TouchableOpacity>
             {isRestaurateur && (
                 <TouchableOpacity onPress={handleRestaurant}>
