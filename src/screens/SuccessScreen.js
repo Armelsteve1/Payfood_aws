@@ -9,6 +9,8 @@ import { Ionicons } from '@expo/vector-icons'
 
 function SuccessScreen() {
 
+    const navigation = useNavigation();
+
     return (
         <Screen style={styles.container}>
             <Image style={styles.logo} source={require('../assets/logo.png')} />

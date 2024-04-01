@@ -136,6 +136,7 @@ const CheckoutScreen = ({ route }) => {
       const foodIds = cartItems.flatMap(item => item.foods.map(food => food.id));
   
       const orderId = uuidv4().substring(0, 10);
+      const customerEmail = user.email;
       
       const foodIdsList = foodIds.map(id => ({ id }));
   
@@ -146,6 +147,7 @@ const CheckoutScreen = ({ route }) => {
         date: currentDate,
         paymentCard: paymentMethod ? paymentMethod.label : null,
         paymentCardTypeImage: paymentMethod ? paymentMethod.image : null,
+        customer: customerEmail
       };
   
       const response = await fetch('https://cwi4gwogwe.execute-api.eu-north-1.amazonaws.com/orders', {
