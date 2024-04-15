@@ -56,6 +56,7 @@ export default function WalletScreen() {
       <View contentContainerStyle={styles.cardContainer}>
         <Card containerStyle={styles.card}>
           <View style={styles.coinContainer}>
+            <Text style={styles.text1}>Gusto </Text>
             <Text style={styles.text1}>{rechargeAmount}</Text>
             <FontAwesomeIcon icon={faCoins} size={24} color="rgb(242, 204, 42)" style={styles.icon} />
           </View>
