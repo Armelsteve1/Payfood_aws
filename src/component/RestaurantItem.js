@@ -6,7 +6,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
 
 const RestaurantItemCard = ({ item, onPress }) => {
-    const [loved, setLoved] = useState(false)
+    const [loved, setLoved] = useState(false);
     return (
         <TouchableOpacity style={tailwind`mx-4 mb-4`} onPress={onPress}>
             <Image
@@ -29,35 +29,33 @@ const RestaurantItemCard = ({ item, onPress }) => {
                 </View>
             </View>
         </TouchableOpacity>
-    )
-}
+    );
+};
 
-const RestaurantItem = () => {
-    const [restaurantData, setRestaurantData] = useState([]);
+const RestaurantItem = ({ restaurantData, searchQuery }) => {
+    const [filteredData, setFilteredData] = useState([]);
     const navigation = useNavigation();
 
     useEffect(() => {
-        fetch('https://arf3k5x9o1.execute-api.eu-north-1.amazonaws.com/items')
-            .then(response => response.json())
-            .then(data => setRestaurantData(data))
-            .catch((error) => {
-                console.error('Erreur:', error);
-            });
-    }, []);
+        const filtered = restaurantData.filter(item =>
+            item.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setFilteredData(filtered);
+    }, [restaurantData, searchQuery]);
 
-    const handlePress = (item) => {
+    const handlePress = item => {
         navigation.navigate("DetailsScreen", {
-            item: {...item},
-        })
-    }
+            item: { ...item },
+        });
+    };
 
     return (
         <View style={tailwind`mt-8`}>
-            {Array.isArray(restaurantData) && restaurantData.map((item, index) => (
+            {filteredData.map((item, index) => (
                 <RestaurantItemCard key={index} item={item} onPress={() => handlePress(item)} />
             ))}
         </View>
     );
-}
+};
 
 export default RestaurantItem;
