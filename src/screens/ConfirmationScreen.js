@@ -7,6 +7,7 @@ import AppSubmitButton from '../component/forms/AppSubmitButton';
 import colors from '../component/configs/colors';
 import Screen from '../component/Screen';
 import { Auth } from 'aws-amplify';
+
 const ConfirmationScreen = ({ route }) => {
   const { username } = route.params;
   const navigation = useNavigation();
@@ -15,10 +16,13 @@ const ConfirmationScreen = ({ route }) => {
   const handleConfirmation = async (values) => {
     setIsLoading(true);
     try {
+
       await Auth.confirmSignUp(username, values.code);
-      navigation.navigate('SignIn');
+      // navigation.navigate("SuccessSignUpScreen");
+
       console.log('After confirmSignUp', username);
       console.log('✅ Success');
+      
     } catch (error) {
       console.error('Error during confirmation', error);
       Alert.alert('Erreur de confirmation', error.message);

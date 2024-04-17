@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Image, Text, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import Modal from 'react-native-modal';
 import Screen from '../component/Screen';
@@ -9,31 +9,35 @@ import { Auth } from 'aws-amplify';
 import { useNavigation } from '@react-navigation/native';
 import colors from '../component/configs/colors';
 import EditProfileScreen from './EditProfileScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AuthContext from '../hooks/AuthContext';
 
 const AccountScreen = () => {
   const navigation = useNavigation();
+  const { signOut } = useContext(AuthContext);
   const [user, setUser] = useState(null);
   const [isEditProfileModalVisible, setIsEditProfileModalVisible] = useState(false);
-    const [isRestaurateur, setRestaurateur] = useState(null)
-  useEffect(() => {
-    checkUser();
-  }, []);
+  const [isRestaurateur, setRestaurateur] = useState(null);
 
-  async function checkUser() {
+    useEffect(() => {
+      checkUser();
+    }, []);
+  
+    async function checkUser() {
       try {
-          const userData = await Auth.currentAuthenticatedUser();
-          setUser(userData.attributes);
-          console.log(userData.attributes, 'user');
-              const groups = userData.signInUserSession.accessToken.payload['cognito:groups'];
-          if (groups && groups.includes('Restaurateur')) {
-              setRestaurateur(true);
-          } else {
-              setRestaurateur(false);
-          }
+        const userData = await Auth.currentAuthenticatedUser();
+        setUser(userData.attributes);
+        const groups = userData.signInUserSession.accessToken.payload['cognito:groups'];
+        if (groups && groups.includes('Restaurateur')) {
+          setRestaurateur(true);
+        } else {
+          setRestaurateur(false);
+        }
       } catch (error) {
-          console.log('user is not signed in');
+        console.log('user is not signed in');
       }
-  }
+    }
+  
 
   const toggleEditProfileModal = () => {
     setIsEditProfileModalVisible(!isEditProfileModalVisible);
@@ -53,40 +57,43 @@ const AccountScreen = () => {
         }
     };
 
-  const handleSignOut = async () => {
-    try {
-      await Auth.signOut();
-      navigation.navigate('Auth');
-      console.log('User signed out successfully.');
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
-  };
+    const handleSignOut = async () => {
+      try {
+        await Auth.signOut();
+        signOut();
+
+        console.log('User signed out successfully.');
+      } catch (error) {
+        console.error('Error signing out:', error);
+      }
+    };
   
-  const handleDelete = async () => {
-    Alert.alert(
-      'Attention',
-      'Voulez-vous vraiment supprimer votre compte définitivement ?',
-      [
-        {
-          text: 'Supprimer',
-          onPress: async () => {
-            try {
-              await Auth.deleteUser(user);
-              console.log('Delete pressed, account deleted successfully');
-            } catch (error) {
-              console.log('Error while deleting account', error);
-            }
+    const handleDelete = async () => {
+      Alert.alert(
+        'Attention',
+        'Voulez-vous vraiment supprimer votre compte définitivement ?',
+        [
+          {
+            text: 'Supprimer',
+            onPress: async () => {
+              try {
+                await Auth.deleteUser(user);
+                signOut();
+                console.log('Delete pressed, account deleted successfully');
+              } catch (error) {
+                console.log('Error while deleting account', error);
+              }
+            },
           },
-        },
-        {
-          text: 'Annuler',
-          onPress: () => console.log('Cancel pressed'),
-          style: 'cancel',
-        },
-      ]
-    );
-  };
+          {
+            text: 'Annuler',
+            onPress: () => console.log('Cancel pressed'),
+            style: 'cancel',
+          },
+        ]
+      );
+    };
+    
 
   return (
     <Screen style={tailwind`flex-1 bg-white`}>
