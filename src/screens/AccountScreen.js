@@ -18,15 +18,29 @@ const AccountScreen = () => {
   const [user, setUser] = useState(null);
   const [isEditProfileModalVisible, setIsEditProfileModalVisible] = useState(false);
   const [isRestaurateur, setRestaurateur] = useState(null);
+  const [userDetails, setUserDetails] = useState(null);
 
     useEffect(() => {
       checkUser();
     }, []);
   
     async function checkUser() {
+
       try {
+
         const userData = await Auth.currentAuthenticatedUser();
+        const userEmail = userData.attributes.email;
+
+        const response = await fetch(`https://kkwnqgn1pb.execute-api.eu-north-1.amazonaws.com/user/${userEmail}`);
+
+        if (!response.ok) {
+          throw new Error('Failed to retrieve user data');
+        }
+    
+        setUserDetails(await response.json());
+
         setUser(userData.attributes);
+        
         const groups = userData.signInUserSession.accessToken.payload['cognito:groups'];
         if (groups && groups.includes('Restaurateur')) {
           setRestaurateur(true);
@@ -34,10 +48,10 @@ const AccountScreen = () => {
           setRestaurateur(false);
         }
       } catch (error) {
-        console.log('user is not signed in');
+        console.log('Error:', error);
       }
     }
-  
+    
 
   const toggleEditProfileModal = () => {
     setIsEditProfileModalVisible(!isEditProfileModalVisible);
@@ -103,12 +117,12 @@ const AccountScreen = () => {
           <Image source={require('../assets/images/avatar.gif')} style={tailwind`w-40 h-40`} />
         </View>
         <View style={tailwind`mt-4 flex-row items-center`}>
-          <Text style={tailwind`text-3xl font-bold`}>{user?.displayName}</Text>
+          <Text style={tailwind`text-3xl font-bold`}>{userDetails[0]?.username}</Text>
           <TouchableOpacity onPress={toggleEditProfileModal} style={{ marginLeft: 10 }}>
             <Ionicons name="create-outline" size={24} color={colors.primary} />
           </TouchableOpacity>
         </View>
-        <Text style={tailwind`text-lg text-gray-600`}>{user?.email}</Text>
+        <Text style={tailwind`text-lg text-gray-600`}>{userDetails[0]?.email}</Text>
       </View>
       <ScrollView style={tailwind`flex-1`} showsVerticalScrollIndicator={true}>
         <View style={tailwind`mx-4 border-t border-t-2 mt-5 border-gray-100`}>
