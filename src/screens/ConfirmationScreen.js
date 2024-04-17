@@ -18,7 +18,7 @@ const ConfirmationScreen = ({ route }) => {
     try {
 
       await Auth.confirmSignUp(username, values.code);
-      // navigation.navigate("SuccessSignUpScreen");
+      navigation.navigate("SuccessSignUpScreen");
 
       console.log('After confirmSignUp', username);
       console.log('✅ Success');

@@ -167,6 +167,7 @@ const CheckoutScreen = ({ route }) => {
   
         console.log('Coins updated successfully');
       } else {
+        
         const coinsId = uuidv4().substring(0, 10);
     
         let orderData = {

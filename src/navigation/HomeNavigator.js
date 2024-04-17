@@ -37,7 +37,6 @@ export default function HomeNavigator() {
             <Stack.Screen name="Preferences" component={AccountSettingsScreen} />
             <Stack.Screen name="Create" component={CreatedRestaurant} />
             <Stack.Screen name="CommandeRest" component={CommandeRestaurant} />
-            <Stack.Screen name='SuccessSignUpScreen' component={SuccessSignUpScreen}/>
         </Stack.Navigator>
     )
 }

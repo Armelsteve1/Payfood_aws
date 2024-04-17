@@ -15,9 +15,9 @@ function SuccessSignUpScreen() {
         <Screen style={styles.container}>
             <Image style={styles.logo} source={require('../assets/logo.png')} />
             <View style={styles.content}>
-                <Ionicons name="checkmark-circle" size={60} color="green" />
-                <Text style={styles.title}>Succès</Text>
-                <Text style={styles.text}>Votre compte a bien été créé.</Text>
+                <Ionicons name="heart-circle-outline" size={60} color="#02c2b3" />
+                <Text style={styles.title}>Bienvenue</Text>
+                <Text style={styles.text}>Votre compte a bien été activé.</Text>
                 <View style={styles.buttons}>
                     <AppButton onPress={() => navigation.navigate('SignIn')} title="Se connecter" color="black" />
                 </View>
@@ -57,4 +57,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default SuccessSignUpScreen
+export default SuccessSignUpScreen;
