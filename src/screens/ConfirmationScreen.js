@@ -34,7 +34,7 @@ const ConfirmationScreen = ({ route }) => {
     <Screen style={styles.container}>
       <View style={styles.wrapper}>
         <Text style={styles.wellcomeTo}>
-          Confirmer votre code Pay<Text style={styles.brand}>Food</Text>
+          Confirmer votre code Payfood
         </Text>
         <View style={styles.form}>
           <AppForm
@@ -56,7 +56,7 @@ const ConfirmationScreen = ({ route }) => {
             onPress={() => navigation.navigate("SignUp")}
             style={{ color: colors.primary }}
           >
-            s'inscrire
+            S'inscrire
           </Text>
         </Text>
       </View>
