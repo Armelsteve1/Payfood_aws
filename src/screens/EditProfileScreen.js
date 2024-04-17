@@ -4,11 +4,11 @@ import Screen from '../component/Screen';
 import tailwind from 'tailwind-react-native-classnames';
 import colors from '../component/configs/colors.js';
 
-export default function EditProfileScreen({ navigation }) {
+export default function EditProfileScreen({ navigation, userDetails }) {
 
-    const [newName, setNewName] = useState();
-    const [newPhoneNumber, setNewPhoneNumber] = useState('');
-    const [newEmail, setNewEmail] = useState();
+    const [newName, setNewName] = useState(userDetails ? userDetails[0].username : '');
+    const [newPhoneNumber, setNewPhoneNumber] = useState(userDetails ? userDetails[0].phone : '');
+    const [newEmail, setNewEmail] = useState(userDetails ? userDetails[0].email : '');
 
     const handleUpdateProfile = async () => {
     };
@@ -26,19 +26,23 @@ export default function EditProfileScreen({ navigation }) {
                         onChangeText={(text) => setNewName(text)}
                     />
                     <TextInput
+                        style={[
+                            tailwind`border border-gray-300 rounded-md p-2 mt-2`,
+                            { color: 'gray', backgroundColor: '#f0f0f0' }
+                        ]}
+                        placeholder="Adresse email"
+                        placeholderTextColor="grey"
+                        value={newEmail}
+                        editable={false}
+                        pointerEvents="none"
+                    />
+                    <TextInput
                         style={tailwind`border border-gray-300 rounded-md p-2 mt-2`}
                         placeholder="Numéro de téléphone"
                         placeholderTextColor="grey"
                         value={newPhoneNumber}
                         keyboardType={'phone-pad'}
                         onChangeText={(number) => setNewPhoneNumber(number)}
-                    />
-                    <TextInput
-                        style={tailwind`border border-gray-300 rounded-md p-2 mt-2`}
-                        placeholder="Adresse email"
-                        placeholderTextColor="grey"
-                        value={newEmail}
-                        onChangeText={(email) => setNewEmail(email)}
                     />
                 </View>
                 <View style={{ justifyContent: 'flex-end', flex: 1 }}>

@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthContext from '../hooks/AuthContext';
 
 const AccountScreen = () => {
+
   const navigation = useNavigation();
   const { signOut } = useContext(AuthContext);
   const [user, setUser] = useState(null);
@@ -167,7 +168,10 @@ const AccountScreen = () => {
           height: 300,
           backgroundColor: 'white',
         }}>
-          <EditProfileScreen onClose={toggleEditProfileModal} />
+          <EditProfileScreen
+            userDetails={userDetails}
+            onClose={toggleEditProfileModal}
+          />
         </View>
       </Modal>
     </Screen>
