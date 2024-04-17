@@ -34,13 +34,6 @@ const MainTabNavigator = () => {
                     )
                 }}
             />
-            {/* <Tab.Screen name="Parcourir" component={BrowseScreen}
-                options={{
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="md-search-sharp" color={color} size={size} />
-                    )
-                }}
-            /> */}
             <Tab.Screen name="Panier" component={CartScreen}
                 options={{
                     tabBarIcon: ({ color, size }) => (

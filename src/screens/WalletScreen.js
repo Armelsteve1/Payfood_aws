@@ -1,51 +1,54 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Modal, TextInput, Button } from "react-native";
-import { Card } from "react-native-elements";
-import { StatusBar } from "expo-status-bar";
-import { Picker } from '@react-native-picker/picker';
-import AppHead from '../component/AppHead';
+import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { Card } from 'react-native-elements';
+import { StatusBar } from 'expo-status-bar';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faCoins, faCreditCard, faAppleAlt, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import Screen from '../component/Screen';
 import tailwind from 'tailwind-react-native-classnames';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faCoins } from '@fortawesome/free-solid-svg-icons';
-import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
-import { faAppleAlt } from '@fortawesome/free-solid-svg-icons';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { Alert } from 'react-native';
+import AppHead from '../component/AppHead';
 import { useNavigation } from '@react-navigation/native';
+import { Auth } from 'aws-amplify';
 
 export default function WalletScreen() {
   const [rechargeAmount, setRechargeAmount] = useState('0,00');
   const navigation = useNavigation();
+  const [user, setUser] = useState(null);
 
-  const handleRecharge = () => {
-    Alert.prompt('Rechargez vos food coins', 'Veuillez saisir le montant', (amount) => {
-      if (!amount) {
-        Alert.alert('Erreur', 'Veuillez saisir un montant.');
-        return;
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userData = await Auth.currentAuthenticatedUser();
+        setUser(userData.attributes);
+      } catch (error) {
+        console.error('Error fetching user:', error);
       }
-  
-      Alert.alert(
-        'Félicitations !',
-        `Vous n'êtez pas si loin ! Vous pouvez dans pas longtemps payer avec vos ${amount} coins. Procéder au paiement?`,
-        [
-          {
-            text: 'Annuler',
-            style: 'cancel',
-          },
-          {
-            text: 'Payer',
-            onPress: () => {
-              console.log("Montant de recharge :", amount);
-              setRechargeAmount(amount);
-              navigation.navigate('CheckoutScreen');
-            },
-          },
-        ],
-      );
-    });
+    };
+
+    fetchUser();
+  }, []);
+
+  useEffect(() => {
+    if (user !== null) {
+      fetchCoins();
+    }
+  }, [user]);
+
+  const fetchCoins = async () => {
+    try {
+
+      const response = await fetch(`https://tdqoe0yq4c.execute-api.eu-north-1.amazonaws.com/coins/${user.email}`);
+      const coinsData = await response.json();
+
+      console.log(coinsData[0].amount);
+      
+      if (coinsData && coinsData[0].amount) {
+        setRechargeAmount(coinsData[0].amount.toString());
+      }
+    } catch (error) {
+      console.error('Error fetching coins:', error);
+    }
   };
-  
 
   return (
     <Screen style={tailwind`flex-1 bg-white`}>
@@ -53,56 +56,21 @@ export default function WalletScreen() {
       <View contentContainerStyle={styles.cardContainer}>
         <Card containerStyle={styles.card}>
           <View style={styles.coinContainer}>
-        <Text style={styles.text1}>{rechargeAmount}</Text>
+            <Text style={styles.text1}>Gusto </Text>
+            <Text style={styles.text1}>{rechargeAmount}</Text>
             <FontAwesomeIcon icon={faCoins} size={24} color="rgb(242, 204, 42)" style={styles.icon} />
           </View>
         </Card>
-        <View>
-        <TouchableOpacity style={styles.button} onPress={handleRecharge}>
-      <Text style={styles.buttonText}>Rechargez vos Food Coins</Text>
-    </TouchableOpacity>
-        </View>
       </View>
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.main}>
           <Text style={styles.text2}>Moyens de paiement</Text>
         </View>
-        <View
-          style={{
-            width: 313,
-            borderBottomWidth: 1,
-            borderBottomColor: 'grey',
-            marginTop: 19,
-            flexDirection: 'row',
-            alignItems: 'center',
-            paddingHorizontal: 10,
-          }}
-        >
-          <FontAwesomeIcon icon={faCreditCard} size={20} color="rgb(30, 48, 80)" style={{ marginRight: 10 }} />
-          <Text
-            style={{
-              color: 'black',
-              fontSize: 18,
-              fontStyle: 'normal',
-              fontWeight: '500',
-              lineHeight: 36,
-              textAlign: 'left',
-            }}
-          >
-            Mastercard 0347
-          </Text>
+        <View style={styles.paymentMethod}>
+          <FontAwesomeIcon icon={faCreditCard} size={20} color="rgb(30, 48, 80)" style={styles.paymentIcon} />
+          <Text style={styles.paymentText}>Mastercard 0347</Text>
         </View>
-        <View
-          style={{
-            width: 313,
-            flexDirection: 'row',
-            alignItems: 'center',
-            borderBottomWidth: 1,
-            borderBottomColor: 'grey',
-            marginTop: 19,
-            paddingHorizontal: 10,
-          }}
-        >
+        <View style={styles.paymentMethod}>
           <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center' }}
             onPress={() => {
@@ -114,26 +82,15 @@ export default function WalletScreen() {
               );
             }}
           >
-            <FontAwesomeIcon icon={faAppleAlt} size={20} color="rgb(30, 48, 80)" style={{ marginRight: 10 }} />
-            <Text
-              style={{
-                color: 'black',
-                fontSize: 18,
-                fontStyle: 'normal',
-                fontWeight: '500',
-                lineHeight: 36,
-                textAlign: 'left',
-              }}
-            > 
-              Apple Pay
-            </Text>
+            <FontAwesomeIcon icon={faAppleAlt} size={20} color="rgb(30, 48, 80)" style={styles.paymentIcon} />
+            <Text style={styles.paymentText}>Apple Pay</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{ marginLeft: 'auto' }}
+            style={styles.arrowIcon}
             onPress={() => {
               Alert.alert(
                 'Apple Pay',
-                'You can pay with Apple Pay.',
+                'Vous pouvez désormais payer avec Apple pay.',
                 [{ text: 'Je comprends.', onPress: () => console.log('OK Pressed') }],
                 { cancelable: false }
               );
@@ -159,74 +116,73 @@ export default function WalletScreen() {
 const styles = {
   container: {
     marginTop: 40,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cardContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   card: {
     width: 300,
     height: 150,
-    border: "none",
-    alignItems: "center",
-    justifyContent: "center",
-    alignSelf: "center",
+    border: 'none',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
     marginTop: 20,
   },
   text1: {
-    color: "black",
+    color: 'black',
     fontSize: 32,
-    fontWeight: "700",
-    textTransform: "uppercase",
+    fontWeight: '700',
+    textTransform: 'uppercase',
   },
   text2: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 18,
-    color: "black",
+    color: 'black',
     marginTop: 10,
     marginLeft: 25,
-  },
-  text3: {
-    opacity: 0.5,
-    fontWeight: "bold",
-    fontSize: 18,
-    color: "black",
-  },
-  main: {
-    marginTop: 20,
-    alignSelf: "flex-start",
-    marginLeft: 25,
-  },
-  button: {
-    display: "flex",
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
-    gap: 10,
-    borderRadius: 99,
-    backgroundColor: "#E71C6B",
-    marginTop:19,
-    alignSelf: "center",
-    marginTop: 20,
-  },
-  buttonText: {
-    color: "#fff",
-    fontWeight: "500",
-    fontSize: 16,
   },
   coinContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  
   icon: {
     marginLeft: 5,
-    color: "green"
+    color: 'green',
+  },
+  main: {
+    marginTop: 20,
+    alignSelf: 'flex-start',
+    marginLeft: 25,
+  },
+  paymentMethod: {
+    width: 313,
+    borderBottomWidth: 1,
+    borderBottomColor: 'grey',
+    marginTop: 19,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+  },
+  paymentIcon: {
+    marginRight: 10,
+  },
+  paymentText: {
+    color: 'black',
+    fontSize: 18,
+    fontStyle: 'normal',
+    fontWeight: '500',
+    lineHeight: 36,
+    textAlign: 'left',
+  },
+  arrowIcon: {
+    marginLeft: 'auto',
   },
   promotionContainer: {
     width: 313,
-    // borderBottomWidth: 1,
-    // borderBottomColor: 'grey',
     marginTop: 19,
     flexDirection: 'row',
     alignItems: 'center',
@@ -240,11 +196,5 @@ const styles = {
     lineHeight: 36,
     textAlign: 'left',
   },
-  couponContainer: {
-    // marginVertical: 10,
-    // paddingHorizontal: 15,
-    // paddingVertical: 10,
-    // borderWidth: 2,
-    // borderColor: '#E71C6B',
-  },
+  couponContainer: {},
 };
