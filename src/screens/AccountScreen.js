@@ -128,13 +128,23 @@ const AccountScreen = () => {
       <ScrollView style={tailwind`flex-1`} showsVerticalScrollIndicator={true}>
         <View style={tailwind`mx-4 border-t border-t-2 mt-5 border-gray-100`}>
           <Text style={tailwind`text-gray-800 mt-2 text-lg mb-2`}>Favoris</Text>
-          {[
-            { title: 'Accueil', text: 'Aller à l\'accueil', Icon: () => <AntDesign name="home" size={24} color={colors.primary} />, onPress: () => navigation.navigate('Accueil') },
-            { title: 'Mon porte monnaie', text: 'Voir méthodes de paiement disponibles', Icon: () => <Ionicons name="wallet" size={24} color={colors.primary} />, onPress: () => navigation.navigate('Portefeuille') },
-            { title: 'Mes préférences', text: 'Gérer les paramètres de mon compte', Icon: () => <Ionicons name="build" size={24} color={colors.primary} />, onPress: () => navigation.navigate('Preferences') },
-          ].map((item, index) => (
-            <SavedPlaces key={index} {...item} />
-          ))}
+          {isRestaurateur ? (
+            [
+              { title: 'Mon restaurant', text: 'Gérer mon restaurant', Icon: () => <AntDesign name="setting" size={24} color={colors.primary} />, onPress: () => navigation.navigate('MonRest') },
+              { title: 'Mes commandes', text: 'Gérer vos commandes', Icon: () => <Ionicons name="receipt-outline" size={24} color={colors.primary} />, onPress: () => navigation.navigate('CommandeRest') },
+              { title: 'Mon menu', text: 'Gérer mon menu', Icon: () => <Ionicons name="menu-outline" size={24} color={colors.primary} />, onPress: () => navigation.navigate('Preferences') },
+            ].map((item, index) => (
+              <SavedPlaces key={index} {...item} />
+            ))
+          ) : (
+            [
+              { title: 'Accueil', text: 'Aller à l\'accueil', Icon: () => <AntDesign name="home" size={24} color={colors.primary} />, onPress: () => navigation.navigate('Accueil') },
+              { title: 'Mon porte monnaie', text: 'Voir méthodes de paiement disponibles', Icon: () => <Ionicons name="wallet" size={24} color={colors.primary} />, onPress: () => navigation.navigate('Portefeuille') },
+              { title: 'Mes préférences', text: 'Gérer les paramètres de mon compte', Icon: () => <Ionicons name="build" size={24} color={colors.primary} />, onPress: () => navigation.navigate('Preferences') },
+            ].map((item, index) => (
+              <SavedPlaces key={index} {...item} />
+            ))
+          )}
         </View>
         <View style={tailwind`mx-4 border-t border-t-2 mt-5 border-gray-100`}>
             <Text style={tailwind`text-gray-800 mt-2 text-lg`}>Autres options</Text>
