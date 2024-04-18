@@ -1,15 +1,17 @@
-import React from 'react'
-import { Image, StyleSheet, View, Text } from 'react-native'
+import React from 'react';
+import { Image, StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native'; // Import Alert
 import AppButton from '../component/AppButton';
 import Screen from '../component/Screen';
 import colors from '../component/configs/colors';
 import { useNavigation } from '@react-navigation/native';
-import tailwind from 'tailwind-react-native-classnames';
-import { Ionicons } from '@expo/vector-icons'
+import { PDFDocument, PDFPage } from 'react-native-pdf-lib'; // Removed unnecessary imports
+import { Ionicons } from '@expo/vector-icons';
 
-function SuccessScreen() {
-
+const SuccessScreen = ({ route }) => {
+    const { orderData } = route.params;
     const navigation = useNavigation();
+
+    console.log(orderData);
 
     return (
         <Screen style={styles.container}>
@@ -18,12 +20,16 @@ function SuccessScreen() {
                 <Ionicons name="checkmark-circle" size={60} color="green" />
                 <Text style={styles.title}>Succès</Text>
                 <Text style={styles.text}>Votre commande a bien été prise en compte.</Text>
+                <TouchableOpacity style={styles.downloadButton}>
+                    <Ionicons name="download-outline" size={24} color={colors.primary} />
+                    <Text style={styles.downloadText}>Télécharger le ticket</Text>
+                </TouchableOpacity>
                 <View style={styles.buttons}>
                     <AppButton onPress={() => navigation.navigate('Accueil')} title="Aller à l'accueil" color="black" />
                 </View>
             </View>
         </Screen>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -36,25 +42,34 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%',
-    }, 
+    },
     title: {
         fontSize: 26,
         fontWeight: 'bold',
     },
     text: {
-        width: 400, 
+        width: 400,
         textAlign: 'center',
         marginTop: 10,
         color: colors.gray
+    },
+    downloadButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 20,
+    },
+    downloadText: {
+        marginLeft: 5,
+        color: colors.primary,
     },
     buttons: {
         width: '70%',
         marginTop: 10,
     },
     logo: {
-        top: -240,
+        top: -220,
         alignSelf: 'center',
     },
-})
+});
 
-export default SuccessScreen
+export default SuccessScreen;

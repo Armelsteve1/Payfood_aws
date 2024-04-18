@@ -18,6 +18,7 @@ const CheckoutScreen = ({ route }) => {
     presentPaymentSheet,
     confirmPaymentSheetPayment,
   } = useStripe();
+
   const [paymentSheetEnabled, setPaymentSheetEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState(null);
@@ -28,6 +29,8 @@ const CheckoutScreen = ({ route }) => {
 
   const { total = 0, count = 0 } = route.params || {};
   const { cartItems, setCartItems } = useContext(CartContext);
+
+  const [orderDetails, setOrderDetails] = useState([]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -238,9 +241,11 @@ const CheckoutScreen = ({ route }) => {
       }
   
       setCartItems([]);
+      setOrderDetails(orderData);
       setTimeout(() => {
         setLoadingOrder(false);
-        navigation.navigate("SuccessScreen");
+        console.log(orderData)
+        navigation.navigate("SuccessScreen", {orderData});
       }, 6000);
     } catch (error) {
       console.error('Error adding order:', error);
