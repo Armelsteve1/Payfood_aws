@@ -118,12 +118,12 @@ const AccountScreen = () => {
           <Image source={require('../assets/images/avatar.gif')} style={tailwind`w-40 h-40`} />
         </View>
         <View style={tailwind`mt-4 flex-row items-center`}>
-          <Text style={tailwind`text-3xl font-bold`}>{userDetails[0]?.username}</Text>
+          <Text style={tailwind`text-3xl font-bold`}>{userDetails ? userDetails[0].username : null}</Text>
           <TouchableOpacity onPress={toggleEditProfileModal} style={{ marginLeft: 10 }}>
             <Ionicons name="create-outline" size={24} color={colors.primary} />
           </TouchableOpacity>
         </View>
-        <Text style={tailwind`text-lg text-gray-600`}>{userDetails[0]?.email}</Text>
+        <Text style={tailwind`text-lg text-gray-600`}>{userDetails ? userDetails[0].email : null}</Text>
       </View>
       <ScrollView style={tailwind`flex-1`} showsVerticalScrollIndicator={true}>
         <View style={tailwind`mx-4 border-t border-t-2 mt-5 border-gray-100`}>
