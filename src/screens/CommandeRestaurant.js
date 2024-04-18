@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  Image,
   FlatList,
   StyleSheet,
   TouchableOpacity,
+  Image
 } from "react-native";
 import { Icon } from "react-native-elements";
 import colors from '../component/configs/colors';
@@ -14,101 +14,83 @@ import AppHead from '../component/AppHead';
 import tailwind from 'tailwind-react-native-classnames';
 
 const CommandeCard = ({ commande, onPress }) => {
-    const {
-      id,
-      items,
-      total,
-      paymentMethod,
-      paymentDetails,
-      date,
-    } = commande;
-  
-    return (
-      <TouchableOpacity style={styles.cardContainer} onPress={onPress}>
-        <View style={styles.cardHeader}>
-          <Text style={styles.commandeNumber}>Commande #{id}</Text>
-        </View>
-        <View style={styles.cardContent}>
-          {items.map((item, index) => (
-            <View key={index} style={styles.itemContainer}>
-              <Text>{item.name}</Text>
-              <Text>{item.price}</Text>
-            </View>
-          ))}
-          <View style={styles.totalContainer}>
-            <Text>Total</Text>
-            <Text>{total}</Text>
-          </View>
-          <View style={styles.paiementContainer}>
-            <Text>Payé via {paymentMethod} {paymentDetails} le {date}</Text>
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  };
-  
+  const {
+    id,
+    customer,
+    date,
+    price,
+  } = commande;
+
+  return (
+    <TouchableOpacity style={styles.cardContainer} onPress={onPress}>
+      <View style={styles.cardHeader}>
+        <Text style={styles.commandeNumber}>Commande #{id}</Text>
+      </View>
+      <View style={styles.cardContent}>
+        <Text>Client: {customer}</Text>
+        <Text>Date: {date}</Text>
+        <Text>Total: {price}€</Text>
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 const CommandeRestaurant = ({ onBackPress }) => {
+  const [commandes, setCommandes] = useState([]);
+  const [triType, setTriType] = useState("recent");
+
+  useEffect(() => {
+    const fetchCommandes = async () => {
+      try {
+        const response = await fetch("https://cwi4gwogwe.execute-api.eu-north-1.amazonaws.com/orders");
+        const data = await response.json();
+        setCommandes(data);
+        console.log(data,'mes commande')
+      } catch (error) {
+        console.error("Erreur lors de la récupération des commandes:", error);
+      }
+    };
+
+    fetchCommandes();
+  }, []);
+
   const handleCommandePress = (commandeId) => {
-    const selected = commandes.find((commande) => commande.id === commandeId);
   };
-  const handleShowFilter = () => {
+
+  const handleTriRecent = () => {
+    setTriType("recent");
+    const commandesTriees = [...commandes].sort((a, b) => new Date(b.date) - new Date(a.date));
+    setCommandes(commandesTriees);
   };
-  const commandes = [
-    {
-      id: "4864",
-      items: [
-        { name: "Chicken wings", price: "11€" },
-        { name: "Ice Tea", price: "2,30€" },
-      ],
-      total: "13,30€",
-      paymentMethod: "MasterCard",
-      paymentDetails: "0651",
-      date: "24/01/2024 à 12:34",
-    },
-    {
-        id: "48624",
-        items: [
-            { name: "Chicken wings", price: "11€" },
-            { name: "Ice Tea", price: "2,30€" },
-        ],
-        total: "13,30€",
-        paymentMethod: "MasterCard",
-        paymentDetails: "0651",
-        date: "24/01/2024 à 12:34",
-    },
-    {
-        id: "48625",
-        items: [
-            { name: "Chicken wings", price: "11€" },
-            { name: "Ice Tea", price: "2,30€" },
-        ],
-        total: "13,30€",
-        paymentMethod: "MasterCard",
-        paymentDetails: "0651",
-        date: "24/01/2024 à 12:34",
-    },
-  ];
+
+  const handleTriAlphabetique = () => {
+    setTriType("alphabetique");
+    const commandesTriees = [...commandes].sort((a, b) => a.customer.localeCompare(b.customer));
+    setCommandes(commandesTriees);
+  };
 
   return (
     <Screen style={tailwind`flex-1 bg-white`}>
-     <AppHead title={`Historique de commandes`} icon="receipt-outline" />
-     <View style={styles.filterContainer}>
-        <View style={styles.filterButton} onPress={handleShowFilter}>
-            <Icon name="filter-list" size={24} color={colors.black} />
-        </View>
-        <TouchableOpacity onPress={handleShowFilter}>
+      <AppHead title={`Historique de commandes`} icon="receipt-outline" />
+      <Image style={styles.logo} source={require('../assets/logo.png')} />
+
+      {/* <View style={styles.filterContainer}>
+        <TouchableOpacity onPress={handleTriRecent} style={triType === "recent" ? styles.activeButton : styles.button}>
+          <Text style={triType === "recent" ? styles.activeButtonText : styles.buttonText}>Plus Récent</Text>
         </TouchableOpacity>
-    </View>
-    <View style={styles.container}>
+        <TouchableOpacity onPress={handleTriAlphabetique} style={triType === "alphabetique" ? styles.activeButton : styles.button}>
+          <Text style={triType === "alphabetique" ? styles.activeButtonText : styles.buttonText}>Alphabétique</Text>
+        </TouchableOpacity>
+      </View> */}
+      <View style={styles.container}>
         <FlatList
-        data={commandes}
-        renderItem={({ item }) => (
+          data={commandes}
+          renderItem={({ item }) => (
             <CommandeCard commande={item} onPress={() => handleCommandePress(item.id)} />
-        )}
-        keyExtractor={(item) => item.id}
+          )}
+          keyExtractor={(item) => item.id}
         />
-    </View>
+      </View>
     </Screen>
   );
 };
@@ -134,50 +116,42 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 18,
   },
-  date: {
-    fontSize: 14,
-  },
   cardContent: {},
-  itemContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 8,
-  },
-  totalContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 16,
-    borderTopWidth: 1,
-    paddingTop: 8,
-  },
-  paiementContainer: {
-    marginTop: 8,
-  },
   filterContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "flex-start",
+    marginBottom: 16,
+  },
+  button: {
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: colors.black,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
     marginRight: 16,
   },
-  filterButton: {
+  activeButton: {
+    borderRadius: 20,
     borderWidth: 1,
-    borderColor: "#E71C6B",
-    borderRadius: 5,
-    padding: 8,
+    borderColor: colors.black,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    marginRight: 16,
+    backgroundColor: colors.rose,
   },
-  buttonTitle: {
-    marginRight: 5,
+  buttonText: {
+    fontSize: 16,
+    color: colors.black,
   },
-  
-  buttonTextContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginLeft: 10,
+  activeButtonText: {
+    fontSize: 16,
+    color: colors.black,
   },
-  buttonTitle: {
-    marginRight: 5,
-  },
+  logo: {
+    alignSelf: 'center',
+    marginTop: 10,
+},
 });
 
 export default CommandeRestaurant;

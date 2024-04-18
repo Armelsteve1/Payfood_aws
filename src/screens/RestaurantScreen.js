@@ -25,13 +25,13 @@ const styles = StyleSheet.create({
     },
     logo: {
         alignSelf: 'center',
-        marginTop: 10, // Add marginTop to adjust the distance from the top
+        marginTop: 10,
     },
     wrapper: {
         paddingHorizontal: 20,
     },
     text: {
-        marginTop: 20, // Add marginTop to adjust the distance from the top
+        marginTop: 20,
     }
 });
 
