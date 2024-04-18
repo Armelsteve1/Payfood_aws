@@ -92,7 +92,7 @@ const CommandeRestaurant = ({ onBackPress }) => {
 
   return (
     <Screen style={tailwind`flex-1 bg-white`}>
-     <AppHead title={`Mon Restaurant`} icon="person-outline" />
+     <AppHead title={`Historique de commandes`} icon="receipt-outline" />
      <View style={styles.filterContainer}>
         <View style={styles.filterButton} onPress={handleShowFilter}>
             <Icon name="filter-list" size={24} color={colors.black} />

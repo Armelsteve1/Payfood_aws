@@ -1,22 +1,20 @@
-import { View, Text, StyleSheet, Image,} from 'react-native';
-import colors from '../../src/component/configs/colors';
+import { View, Text, StyleSheet, Image } from 'react-native';
+import colors from '../component/configs/colors';
 import AppHead from '../component/AppHead';
 import Screen from '../component/Screen';
 import tailwind from 'tailwind-react-native-classnames';
 
 const MonRestaurantScreen = () => {
     return (
-        <>
         <Screen style={tailwind`flex-1 bg-white`}>
-         <AppHead title={`Mon Restaurant`} icon="person-outline" />    
+            {/* <AppHead title={`Mon Restaurant`} icon="person-outline" />     */}
             <Image style={styles.logo} source={require('../assets/logo.png')} />
             <View style={styles.wrapper}>
-                <Text >
-                    Indisponible
+                <Text style={styles.text}>
+                    En cours de développement...
                 </Text>
             </View>
         </Screen>
-        </>
     );
 };
 
@@ -27,10 +25,13 @@ const styles = StyleSheet.create({
     },
     logo: {
         alignSelf: 'center',
-        top: -200,
+        marginTop: 10, // Add marginTop to adjust the distance from the top
     },
     wrapper: {
         paddingHorizontal: 20,
+    },
+    text: {
+        marginTop: 20, // Add marginTop to adjust the distance from the top
     }
 });
 

@@ -10,7 +10,7 @@ import QRCodeGenerator from '../screens/QRCodeGeneretScreen'
 import AuthNavigator from './AuthNavigator';
 import CommandeScreen from '../screens/CommandeScreen'
 import RestaurateurNavigation from './RestaurateurNavigation';
-import MonRestaurantScreen from '../screens/MyRestaurantScreen'
+import MonRestaurantScreen from '../screens/RestaurantScreen'
 import CreatedRestaurant from '../component/FormCreatedRestaurant';
 import CommandeRestaurant from '../screens/CommandeRestaurant';
 import SuccessSignUpScreen from '../screens/SuccessSignUpScreen';
@@ -36,7 +36,7 @@ export default function HomeNavigator() {
             <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
             <Stack.Screen name="Preferences" component={AccountSettingsScreen} />
             <Stack.Screen name="Create" component={CreatedRestaurant} />
-            <Stack.Screen name="CommandeRest" component={CommandeRestaurant} />
+            <Stack.Screen name="CommandeRestaurant" component={CommandeRestaurant} />
         </Stack.Navigator>
     )
 }

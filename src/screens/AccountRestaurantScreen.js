@@ -21,7 +21,7 @@ const AcountRestaurateur = () => {
         <View style={tailwind`mx-4 border-t border-t-2 mt-5 border-gray-100`}>
         {[
             { title: 'Mon restaurant', text: 'Gérer mon restaurant', Icon: () => <AntDesign name="setting" size={24} color={colors.primary} />, onPress: () => navigation.navigate('MonRest') },
-            { title: 'Mes commandes', text: 'Gérer vos commandes', Icon: () => <Ionicons name="receipt-outline" size={24} color={colors.primary} />, onPress: () => navigation.navigate('CommandeRest') },
+            { title: 'Mes commandes', text: 'Gérer vos commandes', Icon: () => <Ionicons name="receipt-outline" size={24} color={colors.primary} />, onPress: () => navigation.navigate('CommandeRestaurant') },
             { title: 'Mon menu', text: 'Gérer mon menu', Icon: () => <Ionicons name="menu-outline" size={24} color={colors.primary} />, onPress: () => navigation.navigate('Preferences') },
         ].map((item, index) => (
             <SavedPlaces key={index} {...item} />

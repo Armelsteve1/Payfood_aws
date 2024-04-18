@@ -131,7 +131,7 @@ const AccountScreen = () => {
           {isRestaurateur ? (
             [
               { title: 'Mon restaurant', text: 'Gérer mon restaurant', Icon: () => <AntDesign name="setting" size={24} color={colors.primary} />, onPress: () => navigation.navigate('MonRest') },
-              { title: 'Mes commandes', text: 'Gérer vos commandes', Icon: () => <Ionicons name="receipt-outline" size={24} color={colors.primary} />, onPress: () => navigation.navigate('CommandeRest') },
+              { title: 'Mes commandes', text: 'Gérer vos commandes', Icon: () => <Ionicons name="receipt-outline" size={24} color={colors.primary} />, onPress: () => navigation.navigate('CommandeRestaurant') },
               { title: 'Mon menu', text: 'Gérer mon menu', Icon: () => <Ionicons name="menu-outline" size={24} color={colors.primary} />, onPress: () => navigation.navigate('Preferences') },
             ].map((item, index) => (
               <SavedPlaces key={index} {...item} />
@@ -154,11 +154,6 @@ const AccountScreen = () => {
             <TouchableOpacity onPress={handleSignOut}>
                 <Text style={{ ...tailwind`text-gray-900 mt-2`, color: colors.gray }} onPress={handleSignOut}>Se déconnecter</Text>
             </TouchableOpacity>
-            {isRestaurateur && (
-                <TouchableOpacity onPress={handleRestaurant}>
-                    <Text style={{ ...tailwind`text-gray-900 mt-2`, color: colors.gray }}>Restaurateur</Text>
-                </TouchableOpacity>
-            )}
             <TouchableOpacity onPress={handleDelete}>
                 <Text style={{ ...tailwind`text-gray-900 mt-2`, color: colors.denger }}>Supprimer mon compte</Text>
             </TouchableOpacity>
