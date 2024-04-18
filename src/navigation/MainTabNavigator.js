@@ -9,6 +9,7 @@ import AccountScreen from '../screens/AccountScreen';
 import RestaurantScreen from '../screens/RestaurantScreen';
 import CommandeRestaurant from '../screens/CommandeRestaurant';
 import ScanScreen from '../screens/ScanScreen';
+import QRCodeGenertScreen from '../screens/QRCodeGeneretScreen';
 import AuthContext from '../hooks/AuthContext';
 import { Auth } from 'aws-amplify';
 
@@ -51,8 +52,8 @@ const MainTabNavigator = () => {
                 headerShown: false,
                 tabBarStyle: {
                     borderTopWidth: 0,
-                    paddingTop: 15,
-                    paddingBottom: 30,
+                    paddingTop: 16,
+                    paddingBottom: 20,
                     height: 80,
                 },
             }}
@@ -75,6 +76,15 @@ const MainTabNavigator = () => {
                             tabBarIcon: ({ color, size }) => (
                                 <Ionicons name="fast-food-outline" color={color} size={size} />
                             ),
+                        }}
+                    />
+                    <Tab.Screen
+                        name="Qr code"
+                        component={QRCodeGenertScreen}
+                        options={{
+                            tabBarIcon: ({ color, size }) => (
+                                <Ionicons name="qr-code-outline" color={color} size={size} />
+                            )
                         }}
                     />
                     <Tab.Screen
