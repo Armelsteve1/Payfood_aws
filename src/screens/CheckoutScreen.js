@@ -10,7 +10,6 @@ import AppHead from '../component/AppHead';
 import { useNavigation } from '@react-navigation/core';
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import { CartContext } from '../hooks/cartContext';
-import { v4 as uuidv4 } from 'uuid';
 
 const CheckoutScreen = ({ route }) => {
   const {
@@ -171,8 +170,17 @@ const CheckoutScreen = ({ route }) => {
         console.log('Coins updated successfully');
       } else {
         
-        const coinsId = uuidv4().substring(0, 10);
-    
+        const getRandomId = () => {
+          const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+          let randomId = '';
+          for (let i = 0; i < 10; i++) {
+            randomId += chars.charAt(Math.floor(Math.random() * chars.length));
+          }
+          return randomId;
+        };
+        
+        const coinsId = getRandomId();
+
         let orderData = {
           id: coinsId,
           amount: total,
@@ -212,7 +220,16 @@ const CheckoutScreen = ({ route }) => {
       const currentDate = new Date().toISOString();
       const foodIds = cartItems.flatMap(item => item.foods.map(food => food.id));
   
-      const orderId = uuidv4().substring(0, 10);
+      const getRandomId = () => {
+        const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let randomId = '';
+        for (let i = 0; i < 10; i++) {
+          randomId += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return randomId;
+      };
+
+      const orderId = getRandomId();
       const customerEmail = user.email;
       
       const foodIdsList = foodIds.map(id => ({ id }));
