@@ -45,4 +45,4 @@ const SavedPlaces = ({ title, text, Icon, onPress }) => (
   </TouchableOpacity>
 );
 
-export default AcountRestaurateur;
+export default AcountRestaurateur
