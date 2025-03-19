@@ -7,7 +7,6 @@ import colors from '../component/configs/colors';
 import AppForm from '../component/forms/AppForm';
 import AppFormFields from '../component/forms/AppFormFeilds';
 import AppSubmitButton from '../component/forms/AppSubmitButton';
-import { v4 as uuidv4 } from 'uuid';
 
 const SignUp = () => {
   const navigation = useNavigation();
@@ -21,7 +20,16 @@ const SignUp = () => {
         password: values.password,
       });
 
-      const userId = uuidv4().substring(0, 10);
+      const getRandomId = () => {
+        const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let randomId = '';
+        for (let i = 0; i < 10; i++) {
+          randomId += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return randomId;
+      };
+      
+      const userId = getRandomId();
 
       const userData = {
         id: userId,
